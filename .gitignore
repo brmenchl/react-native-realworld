@@ -17,3 +17,4 @@ web-report/
 !.yarn/cache
 !.yarn/releases
 !.yarn/plugins
+.vscode/settings.json
