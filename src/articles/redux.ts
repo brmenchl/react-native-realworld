@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { reduce } from 'ramda';
-import { Article } from './types';
+import { ArticleWithAuthor, Article, normalizeArticle } from './types';
 
 const sliceName = 'articles';
 
@@ -12,11 +12,18 @@ const articles = createSlice({
   name: sliceName,
   initialState: {} as SliceState,
   reducers: {
-    updateArticles: (state, action: PayloadAction<Article[]>) =>
-      reduce((acc, article) => ({ ...acc, [article.slug]: article }), state, action.payload),
-    updateArticle: (state, action: PayloadAction<Article>) => ({
+    updateArticles: (state, action: PayloadAction<ArticleWithAuthor[]>) =>
+      reduce(
+        (acc, articleWithAuthor) => ({
+          ...acc,
+          [articleWithAuthor.slug]: normalizeArticle(articleWithAuthor),
+        }),
+        state,
+        action.payload,
+      ),
+    updateArticle: (state, action: PayloadAction<ArticleWithAuthor>) => ({
       ...state,
-      [action.payload.slug]: action.payload,
+      [action.payload.slug]: normalizeArticle(action.payload),
     }),
   },
 });

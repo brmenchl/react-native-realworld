@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import { makeGetArticleBySlug, Article } from '../articles';
 import { RootState } from '../store';
-import { formatDate } from '../utils';
+import { AuthorCitation } from '../authors';
 
 type Props = {
   slug: string;
@@ -24,16 +24,11 @@ export const ArticleDetail: React.FC<Props> = ({ slug }) => {
     <Container>
       <Title>{article.title}</Title>
       <Subtitle>{article.description}</Subtitle>
-      <AuthorContainer>
-        <AuthorAvatar
-          source={{
-            uri:
-              article.author.image || 'https://static.productionready.io/images/smiley-cyrus.jpg',
-          }}
-        />
-        <AuthorName>{article.author.username}</AuthorName>
-        <ArticleDate>{formatDate(new Date(article.createdAt))}</ArticleDate>
-      </AuthorContainer>
+      <AuthorCitation
+        displayType="line"
+        username={article.authorUsername}
+        citationDate={article.createdAt}
+      />
       <Body>{article.body}</Body>
     </Container>
   ) : null;
@@ -53,30 +48,6 @@ const Subtitle = styled.Text`
   margin-top: 10px;
   font-size: 30px;
   color: gray;
-`;
-
-const AuthorContainer = styled.View`
-  margin-top: 10px;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const AuthorAvatar = styled.Image`
-  height: 16px;
-  width: 16px;
-  border-radius: 8px;
-`;
-
-const AuthorName = styled.Text`
-  margin-left: 5px;
-  font-size: 12px;
-  color: black;
-`;
-
-const ArticleDate = styled.Text`
-  margin-left: 5px;
-  font-size: 12px;
-  color: lightgray;
 `;
 
 const Body = styled.Text`

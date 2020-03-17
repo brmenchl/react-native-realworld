@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { RootState } from '../store';
 import { makeGetArticleBySlug, Article } from '../articles';
-import { formatDate } from '../utils';
+import { AuthorCitation } from '../authors';
 
 type Props = {
   slug: string;
@@ -31,44 +31,17 @@ export const ArticlePreview: React.FC<Props> = ({ slug, navigateToArticleDetailS
             <Description numberOfLines={1}>{article.description}</Description>
           </Left>
           <Right>
-            <AuthorContainer>
-              <AuthorAvatar
-                source={{
-                  uri:
-                    article.author.image ||
-                    'https://static.productionready.io/images/smiley-cyrus.jpg',
-                }}
-              />
-              <AuthorName>{article.author.username}</AuthorName>
-              <CreatedDate>{formatDate(new Date(article.createdAt))}</CreatedDate>
-            </AuthorContainer>
+            <AuthorCitation
+              displayType="block"
+              username={article.authorUsername}
+              citationDate={article.createdAt}
+            />
           </Right>
         </Content>
       </>
     </Container>
   ) : null;
 };
-
-const CreatedDate = styled.Text`
-  color: lightgray;
-  font-size: 10px;
-`;
-
-const AuthorName = styled.Text`
-  color: black;
-  margin-top: 10px;
-  font-size: 16px;
-`;
-
-const AuthorAvatar = styled.Image`
-  width: 80px;
-  height: 80px;
-  border-radius: 40px;
-`;
-
-const AuthorContainer = styled.View`
-  align-items: flex-end;
-`;
 
 const Description = styled.Text`
   color: lightgray;
@@ -84,7 +57,9 @@ const Title = styled.Text`
 `;
 
 const Left = styled.View``;
-const Right = styled.View``;
+const Right = styled.View`
+  align-items: flex-end;
+`;
 
 const Content = styled.View`
   width: 100%;

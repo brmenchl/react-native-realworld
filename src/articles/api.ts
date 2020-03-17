@@ -1,13 +1,13 @@
 import api from '../api/client';
-import { Article } from './types';
+import { ArticleWithAuthor } from './types';
 
 type MultipleArticlesResponse = {
-  articles: Article[];
+  articles: ArticleWithAuthor[];
   articlesCount: number;
 };
 
 type SingleArticleResponse = {
-  article: Article;
+  article: ArticleWithAuthor;
 };
 
 export const fetchArticles = () =>
