@@ -1,0 +1,33 @@
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useFocusEffect, RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { loadArticleDetailScreen } from './redux';
+import { ArticleDetail } from './ArticleDetail';
+
+export const ArticleDetailScreenName = 'ArticleDetail';
+
+export type ArticleDetailScreenParamList = {
+  [ArticleDetailScreenName]: {
+    slug: string;
+  };
+};
+
+type Props = {
+  navigation: StackNavigationProp<ArticleDetailScreenParamList, typeof ArticleDetailScreenName>;
+  route: RouteProp<ArticleDetailScreenParamList, typeof ArticleDetailScreenName>;
+};
+
+const ArticleDetailScreen: React.FC<Props> = ({ route }) => {
+  const dispatch = useDispatch();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(loadArticleDetailScreen(route.params.slug));
+    }, [dispatch, route.params.slug]),
+  );
+
+  return <ArticleDetail slug={route.params.slug} />;
+};
+
+export default ArticleDetailScreen;

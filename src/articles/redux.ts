@@ -4,8 +4,7 @@ import { Article } from './types';
 
 const sliceName = 'articles';
 
-type Dictionary<K extends string, T> = { [P in K]?: T };
-type SliceState = Dictionary<string, Article>;
+type SliceState = { [slug: string]: Article | undefined };
 
 export type SelectorState = { [sliceName]: SliceState };
 
@@ -15,6 +14,10 @@ const articles = createSlice({
   reducers: {
     updateArticles: (state, action: PayloadAction<Article[]>) =>
       reduce((acc, article) => ({ ...acc, [article.slug]: article }), state, action.payload),
+    updateArticle: (state, action: PayloadAction<Article>) => ({
+      ...state,
+      [action.payload.slug]: action.payload,
+    }),
   },
 });
 

@@ -6,5 +6,12 @@ type MultipleArticlesResponse = {
   articlesCount: number;
 };
 
+type SingleArticleResponse = {
+  article: Article;
+};
+
 export const fetchArticles = () =>
   api.get<MultipleArticlesResponse>('/articles').then((response) => response.data.articles);
+
+export const fetchArticleBySlug = (slug: string) =>
+  api.get<SingleArticleResponse>(`/articles/${slug}`).then((response) => response.data.article);

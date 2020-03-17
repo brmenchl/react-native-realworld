@@ -1,11 +1,11 @@
 import { takeLeading, call } from 'redux-saga/effects';
-import { loadListArticles } from '../articles/sagas';
+import { loadListArticlesSaga } from '../articles';
 import { loadHomeScreen } from './redux';
 
-const loadHomePageSaga = function*() {
-  yield call(loadListArticles);
+const loadHomeScreenSaga = function*() {
+  yield call(loadListArticlesSaga);
 };
 
 export default function*() {
-  yield takeLeading(loadHomeScreen, loadHomePageSaga);
+  yield takeLeading(loadHomeScreen, loadHomeScreenSaga);
 }

@@ -8,3 +8,5 @@ export const getAllArticleSlugs = createSelector(getArticleState, (state) => Obj
 
 export const makeGetArticleBySlug = () =>
   createSelector(getArticleState, getArticleSlug, (state, slug) => state[slug]);
+
+export const getArticleBySlug = makeGetArticleBySlug();
