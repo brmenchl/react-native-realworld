@@ -1,4 +1,4 @@
-import { Author } from '../authors';
+import { Profile } from '../profiles';
 
 export type Article = {
   slug: string;
@@ -23,7 +23,7 @@ export type ArticleWithAuthor = {
   updatedAt: string;
   favorited: boolean;
   favoritesCount: number;
-  author: Author;
+  author: Profile;
 };
 
 export const normalizeArticle = ({ author, ...rest }: ArticleWithAuthor) => ({

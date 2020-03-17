@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { RootState } from '../store';
-import { makeGetAuthorByUsername } from './selectors';
-import { Author } from './types';
+import { makeGetProfileByUsername } from './selectors';
+import { Profile } from './types';
 import { formatDate } from '../utils';
 
 type Props = {
@@ -15,8 +15,8 @@ type Props = {
 const DEFAULT_AVATAR_URL = 'https://static.productionready.io/images/smiley-cyrus.jpg';
 
 export const AuthorCitation: React.FC<Props> = ({ username, citationDate, displayType }) => {
-  const getAuthorByUsername = useMemo(makeGetAuthorByUsername, []);
-  const author: Author | undefined = useSelector((state: RootState) =>
+  const getAuthorByUsername = useMemo(makeGetProfileByUsername, []);
+  const author: Profile | undefined = useSelector((state: RootState) =>
     getAuthorByUsername(state, username),
   );
 

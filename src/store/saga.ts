@@ -1,8 +1,9 @@
 import { all, spawn, call } from 'redux-saga/effects';
 import { homeScreenSaga } from '../home';
+import { authSaga } from '../auth';
 
 function* rootSaga() {
-  const sagas = [homeScreenSaga];
+  const sagas = [homeScreenSaga, authSaga];
 
   yield all(
     sagas.map((saga) =>

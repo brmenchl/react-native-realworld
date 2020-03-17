@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { reduce } from 'ramda';
-import { Author } from './types';
+import { Profile } from './types';
 import { articles, ArticleWithAuthor } from '../articles';
 
-const sliceName = 'authors';
+const sliceName = 'profiles';
 
-type SliceState = { [slug: string]: Author | undefined };
+type SliceState = { [slug: string]: Profile | undefined };
 
 export type SelectorState = { [sliceName]: SliceState };
 
-const authors = createSlice({
+const profiles = createSlice({
   name: sliceName,
   initialState: {} as SliceState,
   reducers: {},
@@ -23,4 +23,4 @@ const authors = createSlice({
   },
 });
 
-export default authors;
+export default profiles;

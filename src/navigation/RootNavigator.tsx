@@ -18,7 +18,7 @@ export const DrawerNavigator: React.FC = () => {
   const isLoggedIn = useSelector(getIsLoggedIn);
 
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator initialRouteName={Routes.Home}>
       {isLoggedIn ? (
         <Drawer.Screen name={Routes.Profile} component={ProfileScreen} />
       ) : (

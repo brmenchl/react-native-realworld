@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import { makeGetArticleBySlug, Article } from '../articles';
 import { RootState } from '../store';
-import { AuthorCitation } from '../authors';
+import { AuthorCitation } from '../profiles';
 
 type Props = {
   slug: string;

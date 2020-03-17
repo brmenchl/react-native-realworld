@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 import { RootState } from '../store';
 import { makeGetArticleBySlug, Article } from '../articles';
-import { AuthorCitation } from '../authors';
+import { AuthorCitation } from '../profiles';
 
 type Props = {
   slug: string;
