@@ -13,20 +13,4 @@ export type Article = {
   authorUsername: string;
 };
 
-export type ArticleWithAuthor = {
-  slug: string;
-  title: string;
-  description: string;
-  body: string;
-  tagList: string[]; // TODO: maybe move somewhere
-  createdAt: string;
-  updatedAt: string;
-  favorited: boolean;
-  favoritesCount: number;
-  author: Profile;
-};
-
-export const normalizeArticle = ({ author, ...rest }: ArticleWithAuthor) => ({
-  ...rest,
-  authorUsername: author.username,
-});
+export type ArticleWithProfile = { article: Article; profile: Profile };

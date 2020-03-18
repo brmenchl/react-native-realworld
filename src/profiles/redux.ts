@@ -1,25 +1,33 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { reduce } from 'ramda';
 import { Profile } from './types';
-import { articles, ArticleWithAuthor } from '../articles';
+import articles from '../articles/redux';
+import auth from '../auth/redux';
 
 const sliceName = 'profiles';
+
+type DataWithProfile = { profile: Profile };
 
 type SliceState = { [slug: string]: Profile | undefined };
 
 export type SelectorState = { [sliceName]: SliceState };
+
+const insertProfile = (profileState: SliceState, profile: Profile): SliceState => ({
+  ...profileState,
+  [profile.username]: profile,
+});
 
 const profiles = createSlice({
   name: sliceName,
   initialState: {} as SliceState,
   reducers: {},
   extraReducers: {
-    [articles.actions.updateArticles.type]: (state, action: PayloadAction<ArticleWithAuthor[]>) =>
-      reduce(
-        (acc, article) => ({ ...acc, [article.author.username]: article.author }),
+    [articles.actions.updateArticles.type]: (state, action: PayloadAction<DataWithProfile[]>) =>
+      action.payload.reduce(
+        (acc, articleWithProfile) => insertProfile(acc, articleWithProfile.profile),
         state,
-        action.payload,
       ),
+    [auth.actions.loadedUser.type]: (state, action: PayloadAction<DataWithProfile>) =>
+      insertProfile(state, action.payload.profile),
   },
 });
 

@@ -1,10 +1,15 @@
 import { all, spawn, call } from 'redux-saga/effects';
 import { homeScreenSaga } from '../home';
-import { authSaga } from '../auth';
+import { authSaga, loadSessionSaga } from '../auth';
+
+const bootstrapSaga = function*() {
+  yield call(loadSessionSaga);
+};
+
+const sagas = [homeScreenSaga, authSaga];
 
 function* rootSaga() {
-  const sagas = [homeScreenSaga, authSaga];
-
+  yield call(bootstrapSaga);
   yield all(
     sagas.map((saga) =>
       spawn(function*() {

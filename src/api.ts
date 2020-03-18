@@ -5,7 +5,7 @@ const client = axios.create({
 });
 
 export const setAuthToken = (token: string) => {
-  client.defaults.headers = { Authorization: token };
+  client.defaults.headers = { Authorization: `Token ${token}` };
 };
 
 export default client;

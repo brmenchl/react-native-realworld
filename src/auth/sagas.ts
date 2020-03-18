@@ -2,7 +2,7 @@ import { call, put, takeLeading } from 'redux-saga/effects';
 import { AsyncStorage } from 'react-native';
 import { login, fetchUser } from './api';
 import auth, { signIn } from './redux';
-import { setAuthToken } from '../api/client';
+import { setAuthToken } from '../api';
 
 const SESSION_TOKEN_NAME = 'token';
 
