@@ -3,12 +3,13 @@ import { useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ArticleDetailScreen } from '../article-detail';
-import { Routes } from './Routes';
-import { DrawerToggle } from './DrawerToggle';
 import { HomeScreen } from '../home';
 import { getIsLoggedIn, LoginScreen, RegisterScreen } from '../auth';
 import { ProfileScreen } from '../profile';
+import { DrawerContent, DrawerScreenContainer } from './DrawerContent';
+import { Routes } from './Routes';
 
 const RootStack = createStackNavigator();
 
@@ -17,39 +18,46 @@ const Drawer = createDrawerNavigator();
 export const DrawerNavigator: React.FC = () => {
   const isLoggedIn = useSelector(getIsLoggedIn);
 
+  const withScreenContainer = (Screen: React.ComponentType) => (props: any) => (
+    <DrawerScreenContainer>
+      <Screen {...props} />
+    </DrawerScreenContainer>
+  );
+
   return (
-    <Drawer.Navigator initialRouteName={Routes.Home}>
+    <Drawer.Navigator
+      initialRouteName={Routes.Home}
+      drawerContent={(props) => <DrawerContent {...props} isLoggedIn={isLoggedIn} />}
+    >
       {isLoggedIn ? (
-        <Drawer.Screen name={Routes.Profile} component={ProfileScreen} />
+        <Drawer.Screen name={Routes.Profile} component={withScreenContainer(ProfileScreen)} />
       ) : (
         <>
-          <Drawer.Screen name={Routes.Login} component={LoginScreen} />
-          <Drawer.Screen name={Routes.Register} component={RegisterScreen} />
+          <Drawer.Screen name={Routes.Login} component={withScreenContainer(LoginScreen)} />
+          <Drawer.Screen name={Routes.Register} component={withScreenContainer(RegisterScreen)} />
         </>
       )}
-      <Drawer.Screen name={Routes.Home} component={HomeScreen} />
+      <Drawer.Screen name={Routes.Home} component={withScreenContainer(HomeScreen)} />
     </Drawer.Navigator>
   );
 };
 
 const RootNavigator: React.FC = () => (
-  <NavigationContainer>
-    <RootStack.Navigator>
-      <RootStack.Screen
-        name="Home"
-        component={DrawerNavigator}
-        options={{ headerLeft: () => <DrawerToggle /> }}
-      />
-      <RootStack.Screen
-        name={Routes.ArticleDetail}
-        component={ArticleDetailScreen}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
-          title: 'Article',
-        }}
-      />
-    </RootStack.Navigator>
-  </NavigationContainer>
+  <SafeAreaProvider>
+    <NavigationContainer>
+      <RootStack.Navigator screenOptions={{ headerShown: false }}>
+        <RootStack.Screen name="Home" component={DrawerNavigator} />
+        <RootStack.Screen
+          name={Routes.ArticleDetail}
+          component={ArticleDetailScreen}
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
+            title: 'Article',
+          }}
+        />
+      </RootStack.Navigator>
+    </NavigationContainer>
+  </SafeAreaProvider>
 );
 
 export default RootNavigator;

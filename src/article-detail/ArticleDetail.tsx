@@ -21,7 +21,12 @@ export const ArticleDetail: React.FC<Props> = ({ slug }) => {
   }
 
   return article ? (
-    <Container>
+    <Container
+      contentContainerStyle={{
+        paddingVertical: 20,
+        paddingHorizontal: 20,
+      }}
+    >
       <Title>{article.title}</Title>
       <Subtitle>{article.description}</Subtitle>
       <AuthorCitation
@@ -34,10 +39,7 @@ export const ArticleDetail: React.FC<Props> = ({ slug }) => {
   ) : null;
 };
 
-const Container = styled.View`
-  padding-top: 20px;
-  padding-horizontal: 20px;
-`;
+const Container = styled.ScrollView``;
 
 const Title = styled.Text`
   font-size: 40px;

@@ -56,7 +56,10 @@ const Title = styled.Text`
   font-size: 20px;
 `;
 
-const Left = styled.View``;
+const Left = styled.View`
+  width: 50%;
+`;
+
 const Right = styled.View`
   align-items: flex-end;
 `;
