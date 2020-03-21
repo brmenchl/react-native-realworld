@@ -9,7 +9,7 @@ const bootstrapSaga = function*() {
 const sagas = [homeScreenSaga, authSaga];
 
 function* rootSaga() {
-  yield call(bootstrapSaga);
+  yield spawn(bootstrapSaga);
   yield all(
     sagas.map((saga) =>
       spawn(function*() {
