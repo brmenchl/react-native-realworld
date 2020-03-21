@@ -8,7 +8,7 @@ import {
 } from '@react-navigation/drawer';
 import { useDispatch } from 'react-redux';
 import { Container, Left, Icon, Content, Header, Body, Right, Title, Button } from 'native-base';
-import { useNavigation, DrawerActions } from '@react-navigation/native';
+import { useNavigation, DrawerActions, useRoute } from '@react-navigation/native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { auth } from '../auth';
 
@@ -29,11 +29,12 @@ export const DrawerContent: React.FC<DrawerContentComponentProps<DrawerContentOp
 };
 
 export const DrawerScreenContainer: React.FC = ({ children }) => {
+  const insets = useSafeArea();
   const navigation = useNavigation();
+  const route = useRoute();
   const onPressMenuIcon = useCallback(() => navigation.dispatch(DrawerActions.toggleDrawer), [
     navigation,
   ]);
-  const insets = useSafeArea();
 
   return (
     <Container style={{ marginTop: insets.top }}>
@@ -48,7 +49,7 @@ export const DrawerScreenContainer: React.FC = ({ children }) => {
           </Button>
         </Left>
         <Body>
-          <Title>test</Title>
+          <Title>{route.name}</Title>
         </Body>
         <Right />
       </Header>
