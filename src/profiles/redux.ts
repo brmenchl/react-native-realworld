@@ -23,7 +23,7 @@ const profiles = createSlice({
   extraReducers: {
     [articles.actions.updateArticles.type]: (state, action: PayloadAction<DataWithProfile[]>) =>
       action.payload.reduce(
-        (acc, articleWithProfile) => insertProfile(acc, articleWithProfile.profile),
+        (acc, dataWithProfile) => insertProfile(acc, dataWithProfile.profile),
         state,
       ),
     [auth.actions.loadedUser.type]: (state, action: PayloadAction<DataWithProfile>) =>
