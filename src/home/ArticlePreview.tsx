@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import styled from 'styled-components/native';
+import { Card, CardItem, Text, Body, H1 } from 'native-base';
+import { TouchableOpacity } from 'react-native';
 import { RootState } from '../store';
 import { makeGetArticleBySlug, Article } from '../articles';
 import { AuthorCitation } from '../profiles';
@@ -22,63 +23,25 @@ export const ArticlePreview: React.FC<Props> = ({ slug, navigateToArticleDetailS
   ]);
 
   return article ? (
-    <Container onPress={handlePreviewPress}>
-      <>
-        <TagList>Tag1</TagList>
-        <Content>
-          <Left>
-            <Title numberOfLines={2}>{article.title}</Title>
-            <Description numberOfLines={1}>{article.description}</Description>
-          </Left>
-          <Right>
+    <TouchableOpacity onPress={handlePreviewPress}>
+      <Card>
+        <CardItem header>
+          <H1>{article.title}</H1>
+        </CardItem>
+        <CardItem>
+          <Text numberOfLines={1}>{article.description}</Text>
+        </CardItem>
+        <CardItem footer>
+          <Body>
             <AuthorCitation
-              displayType="block"
+              displayType="line"
               username={article.authorUsername}
               citationDate={article.createdAt}
             />
-          </Right>
-        </Content>
-      </>
-    </Container>
+            <Text>{article.tagList.join(' ')}</Text>
+          </Body>
+        </CardItem>
+      </Card>
+    </TouchableOpacity>
   ) : null;
 };
-
-const Description = styled.Text`
-  color: lightgray;
-  margin-top: 5px;
-  font-size: 16px;
-`;
-
-const Title = styled.Text`
-  color: black;
-  font-family: sans-serif;
-  font-weight: bold;
-  font-size: 20px;
-`;
-
-const Left = styled.View`
-  width: 50%;
-`;
-
-const Right = styled.View`
-  align-items: flex-end;
-`;
-
-const Content = styled.View`
-  width: 100%;
-  margin-top: 5px;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const TagList = styled.Text``;
-
-const Container = styled.TouchableOpacity`
-  height: 180px;
-  border-top-width: 0.5px;
-  border-bottom-width: 0.5px;
-  border-color: gray;
-  padding-vertical: 10px;
-  padding-horizontal: 20px;
-  align-items: flex-start;
-`;

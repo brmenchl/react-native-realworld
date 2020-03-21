@@ -51,6 +51,7 @@ const RootNavigator: React.FC = () => (
           name={Routes.ArticleDetail}
           component={ArticleDetailScreen}
           options={{
+            headerShown: true,
             cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
             title: 'Article',
           }}
