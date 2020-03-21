@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import styled from 'styled-components/native';
+import { Content, H1, H3, Text } from 'native-base';
 import { makeGetArticleBySlug, Article } from '../articles';
 import { RootState } from '../store';
 import { AuthorCitation } from '../profiles';
@@ -21,38 +21,15 @@ export const ArticleDetail: React.FC<Props> = ({ slug }) => {
   }
 
   return article ? (
-    <Container
-      contentContainerStyle={{
-        paddingVertical: 20,
-        paddingHorizontal: 20,
-      }}
-    >
-      <Title>{article.title}</Title>
-      <Subtitle>{article.description}</Subtitle>
+    <Content padder>
+      <H1>{article.title}</H1>
+      <H3 style={{ marginTop: 10, color: 'gray' }}>{article.description}</H3>
       <AuthorCitation
         displayType="line"
         username={article.authorUsername}
         citationDate={article.createdAt}
       />
-      <Body>{article.body}</Body>
-    </Container>
+      <Text>{article.body}</Text>
+    </Content>
   ) : null;
 };
-
-const Container = styled.ScrollView``;
-
-const Title = styled.Text`
-  font-size: 40px;
-  color: black;
-`;
-
-const Subtitle = styled.Text`
-  margin-top: 10px;
-  font-size: 30px;
-  color: gray;
-`;
-
-const Body = styled.Text`
-  margin-top: 20px;
-  font-size: 20px;
-`;

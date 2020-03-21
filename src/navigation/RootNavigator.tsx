@@ -52,6 +52,8 @@ const RootNavigator: React.FC = () => (
           component={ArticleDetailScreen}
           options={{
             headerShown: true,
+            headerStyle: { backgroundColor: '#5cb85c' },
+            headerTintColor: 'white',
             cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
             title: 'Article',
           }}
