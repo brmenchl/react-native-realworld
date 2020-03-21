@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
-import { User, guest } from './types';
+import { User, guest, SignedInUserWithProfile } from './types';
 
 const sliceName = 'auth';
 
@@ -11,11 +11,15 @@ const auth = createSlice({
   name: sliceName,
   initialState: guest as SliceState,
   reducers: {
-    loggedIn: (_, action: PayloadAction<User>) => action.payload,
-    loadedUser: (_, action: PayloadAction<User>) => action.payload,
+    loadedUser: (_, action: PayloadAction<SignedInUserWithProfile>) => action.payload.user,
+    loadedGuest: () => guest,
+    logOut: () => guest,
   },
 });
 
 export const signIn = createAction<{ email: string; password: string }>('auth/signIn');
+export const signUp = createAction<{ username: string; email: string; password: string }>(
+  'auth/signUp',
+);
 
 export default auth;

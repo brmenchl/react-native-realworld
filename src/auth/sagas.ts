@@ -1,16 +1,33 @@
-import { call, put, takeLeading } from 'redux-saga/effects';
+import { call, put, takeLeading, takeEvery } from 'redux-saga/effects';
 import { AsyncStorage } from 'react-native';
-import { login, fetchUser } from './api';
-import auth, { signIn } from './redux';
+import { login, fetchUser, register } from './api';
+import auth, { signIn, signUp } from './redux';
 import { setAuthToken } from '../api';
+import { SignedInUserWithProfile, Session } from './types';
 
 const SESSION_TOKEN_NAME = 'token';
 
 const loginSaga = function*(action: ReturnType<typeof signIn>) {
-  const { user, token } = yield call(login, action.payload.email, action.payload.password);
+  const { token, ...userWithProfile }: Session = yield call(
+    login,
+    action.payload.email,
+    action.payload.password,
+  );
   yield call(setAuthToken, token);
   yield call(AsyncStorage.setItem, SESSION_TOKEN_NAME, token);
-  yield put(auth.actions.loggedIn(user));
+  yield put(auth.actions.loadedUser(userWithProfile));
+};
+
+const signUpSaga = function*(action: ReturnType<typeof signUp>) {
+  const { token, ...userWithProfile }: Session = yield call(
+    register,
+    action.payload.username,
+    action.payload.email,
+    action.payload.password,
+  );
+  yield call(setAuthToken, token);
+  yield call(AsyncStorage.setItem, SESSION_TOKEN_NAME, token);
+  yield put(auth.actions.loadedUser(userWithProfile));
 };
 
 export const loadSessionSaga = function*() {
@@ -18,11 +35,19 @@ export const loadSessionSaga = function*() {
 
   if (token) {
     yield call(setAuthToken, token);
-    const user = yield call(fetchUser);
-    yield put(auth.actions.loadedUser(user));
+    const userWithProfile: SignedInUserWithProfile = yield call(fetchUser);
+    yield put(auth.actions.loadedUser(userWithProfile));
+  } else {
+    yield put(auth.actions.loadedGuest());
   }
+};
+
+const logOutSaga = function*() {
+  yield call(AsyncStorage.removeItem, SESSION_TOKEN_NAME);
 };
 
 export default function*() {
   yield takeLeading(signIn, loginSaga);
+  yield takeLeading(signUp, signUpSaga);
+  yield takeEvery(auth.actions.logOut, logOutSaga);
 }

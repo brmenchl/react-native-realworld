@@ -11,7 +11,12 @@ export type SignedInUser = {
 };
 
 export type Session = {
-  user: User;
+  user: SignedInUser;
   profile: Profile;
   token: string;
+};
+
+export type SignedInUserWithProfile = {
+  user: SignedInUser;
+  profile: Profile;
 };
