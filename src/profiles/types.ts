@@ -42,3 +42,5 @@ export const createProfile = (
   image: data.image ?? '',
   relationship: getRelationship(data),
 });
+
+export const DEFAULT_AVATAR_URL = 'https://static.productionready.io/images/smiley-cyrus.jpg';

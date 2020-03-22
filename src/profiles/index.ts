@@ -3,3 +3,4 @@ export * from './redux';
 export * from './types';
 export * from './AuthorCitation';
 export * from './selectors';
+export * from './BigAvatar';

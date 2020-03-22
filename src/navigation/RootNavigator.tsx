@@ -6,7 +6,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ArticleDetailScreen } from '../article-detail';
 import { HomeScreen } from '../home';
-import { getIsLoggedIn, LoginScreen, RegisterScreen } from '../auth';
+import { getIsLoggedIn, LoginScreen, RegisterScreen, getUserWithProfile, guest } from '../auth';
 import { DrawerContent, DrawerScreenContainer } from './DrawerContent';
 import { Routes } from './Routes';
 import { SettingsScreen } from '../settings';
@@ -17,6 +17,7 @@ const Drawer = createDrawerNavigator();
 
 export const DrawerNavigator: React.FC = () => {
   const isLoggedIn = useSelector(getIsLoggedIn);
+  const user = useSelector(getUserWithProfile);
 
   const withScreenContainer = (Screen: React.ComponentType) => (props: any) => (
     <DrawerScreenContainer>
@@ -27,7 +28,13 @@ export const DrawerNavigator: React.FC = () => {
   return (
     <Drawer.Navigator
       initialRouteName={Routes.Home}
-      drawerContent={(props) => <DrawerContent {...props} isLoggedIn={isLoggedIn} />}
+      drawerContent={(props) => (
+        <DrawerContent
+          {...props}
+          isLoggedIn={isLoggedIn}
+          profile={user !== guest ? user.profile : undefined}
+        />
+      )}
     >
       {isLoggedIn ? (
         <Drawer.Screen name={Routes.Settings} component={withScreenContainer(SettingsScreen)} />

@@ -7,14 +7,16 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import { useDispatch } from 'react-redux';
-import { Container, Left, Icon, Content, Header, Body, Right, Title, Button } from 'native-base';
+import { Container, Left, Icon, Header, Body, Right, Title, Button } from 'native-base';
 import { useNavigation, DrawerActions, useRoute } from '@react-navigation/native';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { auth } from '../auth';
+import { BigAvatar, Profile } from '../profiles';
 
 export const DrawerContent: React.FC<DrawerContentComponentProps<DrawerContentOptions> & {
   isLoggedIn: boolean;
-}> = ({ isLoggedIn, ...props }) => {
+  profile?: Profile;
+}> = ({ isLoggedIn, profile, ...props }) => {
   const dispatch = useDispatch();
   const handleLogOutPress = useCallback(() => {
     dispatch(auth.actions.logOut());
@@ -22,6 +24,7 @@ export const DrawerContent: React.FC<DrawerContentComponentProps<DrawerContentOp
 
   return (
     <DrawerContentScrollView {...props}>
+      {isLoggedIn && <BigAvatar profile={profile!} />}
       <DrawerItemList {...props} />
       {isLoggedIn && <DrawerItem label="Sign Out" onPress={handleLogOutPress} />}
     </DrawerContentScrollView>
