@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { Content, H1, H3, Text } from 'native-base';
+import { H1, H3, Text } from 'native-base';
 import { makeGetArticleBySlug, Article } from '../articles';
 import { RootState } from '../store';
 import { AuthorCitation } from '../profiles';
@@ -21,7 +21,7 @@ export const ArticleDetail: React.FC<Props> = ({ slug }) => {
   }
 
   return article ? (
-    <Content padder>
+    <>
       <H1>{article.title}</H1>
       <H3 style={{ marginTop: 10, color: 'gray' }}>{article.description}</H3>
       <AuthorCitation
@@ -30,6 +30,6 @@ export const ArticleDetail: React.FC<Props> = ({ slug }) => {
         citationDate={article.createdAt}
       />
       <Text>{article.body}</Text>
-    </Content>
+    </>
   ) : null;
 };

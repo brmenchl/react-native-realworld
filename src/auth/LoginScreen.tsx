@@ -2,7 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import { useNavigation, ParamListBase, useFocusEffect } from '@react-navigation/native';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { Formik, FormikHelpers, FormikProps, FieldMetaProps } from 'formik';
-import { Form, Item, Input, Button, Text, Container, Content, Label } from 'native-base';
+import { Form, Item, Input, Button, Text, Content, Label } from 'native-base';
 import { useDispatch } from 'react-redux';
 import { Routes } from '../navigation';
 import { signIn } from './redux';
@@ -44,19 +44,17 @@ export const LoginScreen: React.FC = () => {
   });
 
   return (
-    <Container>
-      <Content padder>
-        <Formik
-          initialValues={{ email: '', password: '' }}
-          validateOnMount
-          onSubmit={onSubmit}
-          validate={validate}
-          component={(props) => (
-            <LoginForm {...props} onLinkPress={handleLinkPress} resetFormRef={resetFormRef} />
-          )}
-        />
-      </Content>
-    </Container>
+    <Content padder>
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        validateOnMount
+        onSubmit={onSubmit}
+        validate={validate}
+        component={(props) => (
+          <LoginForm {...props} onLinkPress={handleLinkPress} resetFormRef={resetFormRef} />
+        )}
+      />
+    </Content>
   );
 };
 

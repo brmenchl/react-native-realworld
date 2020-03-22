@@ -53,7 +53,7 @@ export const DrawerScreenContainer: React.FC = ({ children }) => {
         </Body>
         <Right />
       </Header>
-      <Content padder>{children}</Content>
+      {children}
     </Container>
   );
 };

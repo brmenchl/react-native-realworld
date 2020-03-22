@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useFocusEffect, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { Content } from 'native-base';
 import { loadArticleDetailScreen } from './redux';
 import { ArticleDetail } from './ArticleDetail';
 
@@ -27,7 +28,11 @@ const ArticleDetailScreen: React.FC<Props> = ({ route }) => {
     }, [dispatch, route.params.slug]),
   );
 
-  return <ArticleDetail slug={route.params.slug} />;
+  return (
+    <Content padder>
+      <ArticleDetail slug={route.params.slug} />
+    </Content>
+  );
 };
 
 export default ArticleDetailScreen;
