@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAction } from '@reduxjs/toolkit';
-import { User, guest, SignedInUserWithProfile } from './types';
+import { User, guest, SignedInUserWithProfile, UserSettings } from './types';
 
 const sliceName = 'auth';
 
@@ -21,5 +21,6 @@ export const signIn = createAction<{ email: string; password: string }>('auth/si
 export const signUp = createAction<{ username: string; email: string; password: string }>(
   'auth/signUp',
 );
+export const updateSettings = createAction<UserSettings>('auth/updateSettings');
 
 export default auth;

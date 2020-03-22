@@ -1,7 +1,7 @@
 import { call, put, takeLeading, takeEvery } from 'redux-saga/effects';
 import { AsyncStorage } from 'react-native';
-import { login, fetchUser, register } from './api';
-import auth, { signIn, signUp } from './redux';
+import { login, fetchUser, register, updateUser } from './api';
+import auth, { signIn, signUp, updateSettings } from './redux';
 import { setAuthToken } from '../api';
 import { SignedInUserWithProfile, Session } from './types';
 
@@ -30,6 +30,11 @@ const signUpSaga = function*(action: ReturnType<typeof signUp>) {
   yield put(auth.actions.loadedUser(userWithProfile));
 };
 
+const updateUserSaga = function*(action: ReturnType<typeof updateSettings>) {
+  const userWithProfile: SignedInUserWithProfile = yield call(updateUser, action.payload);
+  yield put(auth.actions.loadedUser(userWithProfile));
+};
+
 export const loadSessionSaga = function*() {
   const token = yield call(AsyncStorage.getItem, SESSION_TOKEN_NAME);
 
@@ -49,5 +54,6 @@ const logOutSaga = function*() {
 export default function*() {
   yield takeLeading(signIn, loginSaga);
   yield takeLeading(signUp, signUpSaga);
+  yield takeLeading(updateSettings, updateUserSaga);
   yield takeEvery(auth.actions.logOut, logOutSaga);
 }

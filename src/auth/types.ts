@@ -20,3 +20,11 @@ export type SignedInUserWithProfile = {
   user: SignedInUser;
   profile: Profile;
 };
+
+export type UserSettings = {
+  image: string;
+  username: string;
+  bio: string;
+  email: string;
+  password: string;
+};

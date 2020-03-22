@@ -1,5 +1,5 @@
 import api from '../api';
-import { Session, SignedInUserWithProfile, SignedInUser } from './types';
+import { Session, SignedInUserWithProfile, SignedInUser, UserSettings } from './types';
 import { createProfile, ProfileDataWithoutFollowing } from '../profiles';
 
 type UserResponse = {
@@ -8,6 +8,18 @@ type UserResponse = {
     token: string;
   };
 };
+
+const omitNilFields = <T>(o: Record<string, T | undefined>) =>
+  Object.keys(o).reduce((acc, k) => {
+    const value = o[k];
+
+    return value
+      ? {
+          ...acc,
+          [k]: value,
+        }
+      : acc;
+  }, {});
 
 const createUser = ({ user }: UserResponse): SignedInUser => ({
   email: user.email,
@@ -33,3 +45,13 @@ export const fetchUser = () =>
     user: createUser(response.data),
     profile: createProfile(response.data.user),
   }));
+
+export const updateUser = (settings: UserSettings) =>
+  api
+    .put<UserResponse>('/user', {
+      user: omitNilFields(settings),
+    })
+    .then<SignedInUserWithProfile>((response) => ({
+      user: createUser(response.data),
+      profile: createProfile(response.data.user),
+    }));
