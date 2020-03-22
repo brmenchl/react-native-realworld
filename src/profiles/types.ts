@@ -7,7 +7,7 @@ export enum Relationship {
 export type Profile = {
   username: string;
   bio: string;
-  image: string | null;
+  image: string;
   relationship: Relationship;
 };
 
@@ -39,6 +39,6 @@ export const createProfile = (
 ): Profile => ({
   username: data.username,
   bio: data.bio,
-  image: data.image,
+  image: data.image ?? '',
   relationship: getRelationship(data),
 });

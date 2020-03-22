@@ -7,9 +7,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ArticleDetailScreen } from '../article-detail';
 import { HomeScreen } from '../home';
 import { getIsLoggedIn, LoginScreen, RegisterScreen } from '../auth';
-import { ProfileScreen } from '../profile';
 import { DrawerContent, DrawerScreenContainer } from './DrawerContent';
 import { Routes } from './Routes';
+import { SettingsScreen } from '../settings';
 
 const RootStack = createStackNavigator();
 
@@ -30,7 +30,7 @@ export const DrawerNavigator: React.FC = () => {
       drawerContent={(props) => <DrawerContent {...props} isLoggedIn={isLoggedIn} />}
     >
       {isLoggedIn ? (
-        <Drawer.Screen name={Routes.Profile} component={withScreenContainer(ProfileScreen)} />
+        <Drawer.Screen name={Routes.Settings} component={withScreenContainer(SettingsScreen)} />
       ) : (
         <>
           <Drawer.Screen name={Routes.Login} component={withScreenContainer(LoginScreen)} />
