@@ -1,3 +1,3 @@
-import { createAction } from '@reduxjs/toolkit';
+import { createAction } from "@reduxjs/toolkit";
 
-export const loadHomeScreen = createAction('screens/home/load');
+export const loadHomeScreen = createAction("screens/home/load");

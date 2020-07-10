@@ -1,8 +1,9 @@
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { getIsLoggedIn } from './selectors';
-import { Routes } from '../navigation';
+import { useNavigation } from "@react-navigation/native";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+
+import { Routes } from "../navigation";
+import { getIsLoggedIn } from "./selectors";
 
 export const useAuthOnly = () => {
   const navigation = useNavigation();

@@ -1,11 +1,16 @@
-import React, { useCallback, useRef } from 'react';
-import { useNavigation, ParamListBase, useFocusEffect } from '@react-navigation/native';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { Formik, FormikHelpers, FormikProps, FieldMetaProps } from 'formik';
-import { Form, Item, Input, Button, Text, Content, Label } from 'native-base';
-import { useDispatch } from 'react-redux';
-import { Routes } from '../navigation';
-import { signIn } from './redux';
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import {
+  useNavigation,
+  ParamListBase,
+  useFocusEffect,
+} from "@react-navigation/native";
+import { Formik, FormikHelpers, FormikProps, FieldMetaProps } from "formik";
+import { Form, Item, Input, Button, Text, Content, Label } from "native-base";
+import React, { useCallback, useRef } from "react";
+import { useDispatch } from "react-redux";
+
+import { Routes } from "../navigation";
+import { signIn } from "./redux";
 
 type LoginFormValues = {
   email: string;
@@ -17,10 +22,10 @@ type ResetForm = () => void;
 const validate = (values: LoginFormValues) => {
   const errors: Partial<LoginFormValues> = {};
   if (!values.email) {
-    errors.email = 'Required';
+    errors.email = "Required";
   }
   if (!values.password) {
-    errors.password = 'Required';
+    errors.password = "Required";
   }
   return errors;
 };
@@ -30,7 +35,10 @@ export const LoginScreen: React.FC = () => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
   const resetFormRef = useRef<ResetForm>(() => null);
 
-  const onSubmit = (values: LoginFormValues, helpers: FormikHelpers<LoginFormValues>) => {
+  const onSubmit = (
+    values: LoginFormValues,
+    helpers: FormikHelpers<LoginFormValues>
+  ) => {
     dispatch(signIn(values));
     helpers.setSubmitting(false);
   };
@@ -46,12 +54,16 @@ export const LoginScreen: React.FC = () => {
   return (
     <Content padder>
       <Formik
-        initialValues={{ email: '', password: '' }}
+        initialValues={{ email: "", password: "" }}
         validateOnMount
         onSubmit={onSubmit}
         validate={validate}
         component={(props) => (
-          <LoginForm {...props} onLinkPress={handleLinkPress} resetFormRef={resetFormRef} />
+          <LoginForm
+            {...props}
+            onLinkPress={handleLinkPress}
+            resetFormRef={resetFormRef}
+          />
         )}
       />
     </Content>
@@ -82,7 +94,11 @@ const Field: React.FC<{
   </Item>
 );
 
-const LoginForm: React.FC<LoginFormProps> = ({ resetFormRef, onLinkPress, ...formik }) => {
+const LoginForm: React.FC<LoginFormProps> = ({
+  resetFormRef,
+  onLinkPress,
+  ...formik
+}) => {
   resetFormRef.current = formik.resetForm;
 
   return (
@@ -90,15 +106,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ resetFormRef, onLinkPress, ...for
       <Form>
         <Field
           label="Email"
-          meta={formik.getFieldMeta('email')}
-          onBlur={formik.handleBlur('email')}
-          onChange={formik.handleChange('email')}
+          meta={formik.getFieldMeta("email")}
+          onBlur={formik.handleBlur("email")}
+          onChange={formik.handleChange("email")}
         />
         <Field
           label="Password"
-          meta={formik.getFieldMeta('password')}
-          onBlur={formik.handleBlur('password')}
-          onChange={formik.handleChange('password')}
+          meta={formik.getFieldMeta("password")}
+          onBlur={formik.handleBlur("password")}
+          onChange={formik.handleChange("password")}
           secureTextEntry
         />
       </Form>
@@ -110,7 +126,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ resetFormRef, onLinkPress, ...for
       >
         <Text>Sign In</Text>
       </Button>
-      <Button block info style={{ marginTop: 10, marginHorizontal: 15 }} onPress={onLinkPress}>
+      <Button
+        block
+        info
+        style={{ marginTop: 10, marginHorizontal: 15 }}
+        onPress={onLinkPress}
+      >
         <Text>Sign Up</Text>
       </Button>
     </>

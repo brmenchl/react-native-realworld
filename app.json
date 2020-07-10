@@ -1,10 +1,13 @@
 {
   "expo": {
-    "name": "Blank Template (TypeScript)",
+    "name": "React Native Realworld",
     "slug": "realworld",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
-    "platforms": ["ios", "android", "web"],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
     "androidStatusBar": {
       "backgroundColor": "#5cb85c"
     },
@@ -19,7 +22,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     }

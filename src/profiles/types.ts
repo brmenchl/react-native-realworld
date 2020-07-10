@@ -1,7 +1,7 @@
 export enum Relationship {
-  Other = 'Other',
-  Following = 'Following',
-  Self = 'Self',
+  Other = "Other",
+  Following = "Following",
+  Self = "Self",
 }
 
 export type Profile = {
@@ -22,11 +22,12 @@ export type ProfileDataWithFollowing = ProfileDataWithoutFollowing & {
 };
 
 const hasFollowing = (
-  data: ProfileDataWithFollowing | ProfileDataWithoutFollowing,
-): data is ProfileDataWithFollowing => Object.prototype.hasOwnProperty.call(data, 'following');
+  data: ProfileDataWithFollowing | ProfileDataWithoutFollowing
+): data is ProfileDataWithFollowing =>
+  Object.prototype.hasOwnProperty.call(data, "following");
 
 const getRelationship = (
-  data: ProfileDataWithFollowing | ProfileDataWithoutFollowing,
+  data: ProfileDataWithFollowing | ProfileDataWithoutFollowing
 ): Relationship => {
   if (hasFollowing(data)) {
     return data.following ? Relationship.Following : Relationship.Other;
@@ -35,12 +36,13 @@ const getRelationship = (
 };
 
 export const createProfile = (
-  data: ProfileDataWithFollowing | ProfileDataWithoutFollowing,
+  data: ProfileDataWithFollowing | ProfileDataWithoutFollowing
 ): Profile => ({
   username: data.username,
   bio: data.bio,
-  image: data.image ?? '',
+  image: data.image ?? "",
   relationship: getRelationship(data),
 });
 
-export const DEFAULT_AVATAR_URL = 'https://static.productionready.io/images/smiley-cyrus.jpg';
+export const DEFAULT_AVATAR_URL =
+  "https://static.productionready.io/images/smiley-cyrus.jpg";

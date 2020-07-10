@@ -1,10 +1,25 @@
-import React, { useRef, useCallback, ComponentType } from 'react';
-import { FormikHelpers, Formik, FormikProps, FieldMetaProps } from 'formik';
-import { useFocusEffect } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
-import { Content, Button, Item, Input, Label, Form, Text, Textarea } from 'native-base';
-import { TextInputProps } from 'react-native';
-import { auth, getUserWithProfile, useAuthOnly, updateSettings, guest } from '../auth';
+import { useFocusEffect } from "@react-navigation/native";
+import { FormikHelpers, Formik, FormikProps, FieldMetaProps } from "formik";
+import {
+  Content,
+  Button,
+  Item,
+  Input,
+  Label,
+  Form,
+  Text,
+  Textarea,
+} from "native-base";
+import React, { useRef, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  auth,
+  getUserWithProfile,
+  useAuthOnly,
+  updateSettings,
+  guest,
+} from "../auth";
 
 type SettingsFormValues = {
   image: string;
@@ -23,7 +38,10 @@ export const SettingsScreen: React.FC = () => {
 
   useAuthOnly();
 
-  const onSubmit = (values: SettingsFormValues, helpers: FormikHelpers<SettingsFormValues>) => {
+  const onSubmit = (
+    values: SettingsFormValues,
+    helpers: FormikHelpers<SettingsFormValues>
+  ) => {
     dispatch(updateSettings(values));
     helpers.setSubmitting(false);
   };
@@ -44,13 +62,17 @@ export const SettingsScreen: React.FC = () => {
           username: userWithProfile.user.username,
           bio: userWithProfile.profile.bio,
           email: userWithProfile.user.email,
-          password: '',
+          password: "",
         }}
         enableReinitialize
         validateOnMount
         onSubmit={onSubmit}
         component={(props) => (
-          <SettingsForm {...props} onLogoutPress={handleLogoutPress} resetFormRef={resetFormRef} />
+          <SettingsForm
+            {...props}
+            onLogoutPress={handleLogoutPress}
+            resetFormRef={resetFormRef}
+          />
         )}
       />
     </Content>
@@ -80,7 +102,11 @@ const Field: React.FC<{
   </Item>
 );
 
-const SettingsForm: React.FC<SettingsFormProps> = ({ resetFormRef, onLogoutPress, ...formik }) => {
+const SettingsForm: React.FC<SettingsFormProps> = ({
+  resetFormRef,
+  onLogoutPress,
+  ...formik
+}) => {
   resetFormRef.current = formik.resetForm;
 
   return (
@@ -88,23 +114,23 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ resetFormRef, onLogoutPress
       <Form>
         <Field
           label="URL of profile picture"
-          meta={formik.getFieldMeta('image')}
-          onBlur={formik.handleBlur('image')}
-          onChange={formik.handleChange('image')}
+          meta={formik.getFieldMeta("image")}
+          onBlur={formik.handleBlur("image")}
+          onChange={formik.handleChange("image")}
         />
         <Field
           label="Username"
-          meta={formik.getFieldMeta('username')}
-          onBlur={formik.handleBlur('username')}
-          onChange={formik.handleChange('username')}
+          meta={formik.getFieldMeta("username")}
+          onBlur={formik.handleBlur("username")}
+          onChange={formik.handleChange("username")}
         />
         <Item stackedLabel underline={false}>
           <Label style={{ marginBottom: 5 }}>Short bio about you</Label>
           <Textarea
-            onChangeText={formik.handleChange('bio')}
-            onBlur={formik.handleBlur('bio')}
+            onChangeText={formik.handleChange("bio")}
+            onBlur={formik.handleBlur("bio")}
             value={formik.values.bio}
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
             rowSpan={5}
             bordered={false}
             underline={false}
@@ -112,15 +138,15 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ resetFormRef, onLogoutPress
         </Item>
         <Field
           label="Email"
-          meta={formik.getFieldMeta('email')}
-          onBlur={formik.handleBlur('email')}
-          onChange={formik.handleChange('email')}
+          meta={formik.getFieldMeta("email")}
+          onBlur={formik.handleBlur("email")}
+          onChange={formik.handleChange("email")}
         />
         <Field
           label="New Password"
-          meta={formik.getFieldMeta('password')}
-          onBlur={formik.handleBlur('password')}
-          onChange={formik.handleChange('password')}
+          meta={formik.getFieldMeta("password")}
+          onBlur={formik.handleBlur("password")}
+          onChange={formik.handleChange("password")}
           secureTextEntry
         />
       </Form>
@@ -132,7 +158,12 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ resetFormRef, onLogoutPress
       >
         <Text>Update Settings</Text>
       </Button>
-      <Button block danger style={{ marginTop: 10, marginHorizontal: 15 }} onPress={onLogoutPress}>
+      <Button
+        block
+        danger
+        style={{ marginTop: 10, marginHorizontal: 15 }}
+        onPress={onLogoutPress}
+      >
         <Text>Or click here to logout.</Text>
       </Button>
     </>

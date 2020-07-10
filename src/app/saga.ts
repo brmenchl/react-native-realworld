@@ -1,8 +1,9 @@
-import { all, spawn, call } from 'redux-saga/effects';
-import { homeScreenSaga } from '../home';
-import { authSaga, loadSessionSaga } from '../auth';
+import { all, spawn, call } from "redux-saga/effects";
 
-const bootstrapSaga = function*() {
+import { authSaga, loadSessionSaga } from "../auth";
+import { homeScreenSaga } from "../home";
+
+const bootstrapSaga = function* () {
   yield call(loadSessionSaga);
 };
 
@@ -12,7 +13,7 @@ function* rootSaga() {
   yield spawn(bootstrapSaga);
   yield all(
     sagas.map((saga) =>
-      spawn(function*() {
+      spawn(function* () {
         while (true) {
           try {
             yield call(saga);
@@ -22,8 +23,8 @@ function* rootSaga() {
             console.log(e);
           }
         }
-      }),
-    ),
+      })
+    )
   );
 }
 

@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
 const client = axios.create({
-  baseURL: 'https://conduit.productionready.io/api',
+  baseURL: "https://conduit.productionready.io/api",
 });
 
 export const setAuthToken = (token: string) => {

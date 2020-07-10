@@ -1,9 +1,9 @@
-import { Profile } from '../profiles';
+import { Profile } from "../profiles";
 
 export type User = Guest | SignedInUser;
 
-export type Guest = 'guest';
-export const guest: Guest = 'guest';
+export type Guest = "guest";
+export const guest: Guest = "guest";
 
 export type SignedInUser = {
   email: string;

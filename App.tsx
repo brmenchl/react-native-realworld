@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import * as Font from 'expo-font';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Ionicons } from '@expo/vector-icons';
-import { store } from './src/store';
+import store from './src/app/store';
 import RootNavigator from './src/navigation/RootNavigator';
 
 const App = () => {
@@ -19,6 +18,7 @@ const App = () => {
       setIsReady(true);
     });
   }, []);
+
   return isReady ? (
     <Provider store={store}>
       <RootNavigator />

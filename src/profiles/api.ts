@@ -1,5 +1,5 @@
-import api from '../api';
-import { createProfile, ProfileDataWithFollowing } from './types';
+import api from "../api";
+import { createProfile, ProfileDataWithFollowing } from "./types";
 
 type ProfileResponse = {
   profile: ProfileDataWithFollowing;

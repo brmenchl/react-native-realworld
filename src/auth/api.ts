@@ -1,6 +1,11 @@
-import api from '../api';
-import { Session, SignedInUserWithProfile, SignedInUser, UserSettings } from './types';
-import { createProfile, ProfileDataWithoutFollowing } from '../profiles';
+import api from "../api";
+import { createProfile, ProfileDataWithoutFollowing } from "../profiles";
+import {
+  Session,
+  SignedInUserWithProfile,
+  SignedInUser,
+  UserSettings,
+} from "./types";
 
 type UserResponse = {
   user: ProfileDataWithoutFollowing & {
@@ -27,28 +32,32 @@ const createUser = ({ user }: UserResponse): SignedInUser => ({
 });
 
 export const login = (email: string, password: string) =>
-  api.post('/users/login', { user: { email, password } }).then<Session>((response) => ({
-    user: createUser(response.data),
-    profile: createProfile(response.data),
-    token: response.data.user.token,
-  }));
+  api
+    .post("/users/login", { user: { email, password } })
+    .then<Session>((response) => ({
+      user: createUser(response.data),
+      profile: createProfile(response.data),
+      token: response.data.user.token,
+    }));
 
 export const register = (username: string, email: string, password: string) =>
-  api.post('/users/login', { user: { username, email, password } }).then<Session>((response) => ({
-    user: createUser(response.data),
-    profile: createProfile(response.data),
-    token: response.data.user.token,
-  }));
+  api
+    .post("/users/login", { user: { username, email, password } })
+    .then<Session>((response) => ({
+      user: createUser(response.data),
+      profile: createProfile(response.data),
+      token: response.data.user.token,
+    }));
 
 export const fetchUser = () =>
-  api.get<UserResponse>('/user').then<SignedInUserWithProfile>((response) => ({
+  api.get<UserResponse>("/user").then<SignedInUserWithProfile>((response) => ({
     user: createUser(response.data),
     profile: createProfile(response.data.user),
   }));
 
 export const updateUser = (settings: UserSettings) =>
   api
-    .put<UserResponse>('/user', {
+    .put<UserResponse>("/user", {
       user: omitNilFields(settings),
     })
     .then<SignedInUserWithProfile>((response) => ({

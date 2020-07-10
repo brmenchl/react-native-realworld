@@ -1,26 +1,30 @@
-import React, { useMemo, useCallback } from 'react';
-import { useSelector } from 'react-redux';
-import { Card, CardItem, Text, Body, H1 } from 'native-base';
-import { TouchableOpacity } from 'react-native';
-import { RootState } from '../store';
-import { makeGetArticleBySlug, Article } from '../articles';
-import { AuthorCitation } from '../profiles';
+import { Card, CardItem, Text, Body, H1 } from "native-base";
+import React, { useMemo, useCallback } from "react";
+import { TouchableOpacity } from "react-native";
+import { useSelector } from "react-redux";
+
+import { makeGetArticleBySlug, Article } from "../articles";
+import { AuthorCitation } from "../profiles";
+import { RootState } from "../store";
 
 type Props = {
   slug: string;
   navigateToArticleDetailScreen(slug: string): void;
 };
 
-export const ArticlePreview: React.FC<Props> = ({ slug, navigateToArticleDetailScreen }) => {
+export const ArticlePreview: React.FC<Props> = ({
+  slug,
+  navigateToArticleDetailScreen,
+}) => {
   const getArticleBySlug = useMemo(makeGetArticleBySlug, []);
   const article: Article | undefined = useSelector((state: RootState) =>
-    getArticleBySlug(state, slug),
+    getArticleBySlug(state, slug)
   );
 
-  const handlePreviewPress = useCallback(() => navigateToArticleDetailScreen(slug), [
-    navigateToArticleDetailScreen,
-    slug,
-  ]);
+  const handlePreviewPress = useCallback(
+    () => navigateToArticleDetailScreen(slug),
+    [navigateToArticleDetailScreen, slug]
+  );
 
   return article ? (
     <TouchableOpacity onPress={handlePreviewPress}>
@@ -38,7 +42,7 @@ export const ArticlePreview: React.FC<Props> = ({ slug, navigateToArticleDetailS
               username={article.authorUsername}
               citationDate={article.createdAt}
             />
-            <Text>{article.tagList.join(' ')}</Text>
+            <Text>{article.tagList.join(" ")}</Text>
           </Body>
         </CardItem>
       </Card>

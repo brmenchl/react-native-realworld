@@ -1,5 +1,5 @@
-import { createAction, PayloadActionCreator } from '@reduxjs/toolkit';
+import { createAction, PayloadActionCreator } from "@reduxjs/toolkit";
 
 export const loadArticleDetailScreen = createAction<string>(
-  'screens/articleDetails/load',
+  "screens/articleDetails/load"
 ) as PayloadActionCreator<string, string>;

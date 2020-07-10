@@ -1,6 +1,6 @@
-import api from '../api';
-import { createProfile, Profile } from '../profiles';
-import { Article } from './types';
+import api from "../api";
+import { createProfile, Profile } from "../profiles";
+import { Article } from "./types";
 
 type MultipleArticlesResponse = {
   articles: ArticleWithAuthor[];
@@ -36,7 +36,7 @@ const parseArticle = (articleWithAuthor: ArticleWithAuthor) => ({
 
 export const fetchArticles = () =>
   api
-    .get<MultipleArticlesResponse>('/articles')
+    .get<MultipleArticlesResponse>("/articles")
     .then((response) => response.data.articles.map(parseArticle));
 
 export const fetchArticleBySlug = (slug: string) =>

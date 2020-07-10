@@ -1,15 +1,25 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ArticleDetailScreen } from '../article-detail';
-import { HomeScreen } from '../home';
-import { getIsLoggedIn, LoginScreen, RegisterScreen, getUserWithProfile, guest } from '../auth';
-import { DrawerContent, DrawerScreenContainer } from './DrawerContent';
-import { Routes } from './Routes';
-import { SettingsScreen } from '../settings';
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from "@react-navigation/stack";
+import React from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { useSelector } from "react-redux";
+
+import { ArticleDetailScreen } from "../article-detail";
+import {
+  getIsLoggedIn,
+  LoginScreen,
+  RegisterScreen,
+  getUserWithProfile,
+  guest,
+} from "../auth";
+import { HomeScreen } from "../home";
+import { SettingsScreen } from "../settings";
+import { DrawerContent, DrawerScreenContainer } from "./DrawerContent";
+import { Routes } from "./Routes";
 
 const RootStack = createStackNavigator();
 
@@ -37,14 +47,26 @@ export const DrawerNavigator: React.FC = () => {
       )}
     >
       {isLoggedIn ? (
-        <Drawer.Screen name={Routes.Settings} component={withScreenContainer(SettingsScreen)} />
+        <Drawer.Screen
+          name={Routes.Settings}
+          component={withScreenContainer(SettingsScreen)}
+        />
       ) : (
         <>
-          <Drawer.Screen name={Routes.Login} component={withScreenContainer(LoginScreen)} />
-          <Drawer.Screen name={Routes.Register} component={withScreenContainer(RegisterScreen)} />
+          <Drawer.Screen
+            name={Routes.Login}
+            component={withScreenContainer(LoginScreen)}
+          />
+          <Drawer.Screen
+            name={Routes.Register}
+            component={withScreenContainer(RegisterScreen)}
+          />
         </>
       )}
-      <Drawer.Screen name={Routes.Home} component={withScreenContainer(HomeScreen)} />
+      <Drawer.Screen
+        name={Routes.Home}
+        component={withScreenContainer(HomeScreen)}
+      />
     </Drawer.Navigator>
   );
 };
@@ -59,10 +81,11 @@ const RootNavigator: React.FC = () => (
           component={ArticleDetailScreen}
           options={{
             headerShown: true,
-            headerStyle: { backgroundColor: '#5cb85c' },
-            headerTintColor: 'white',
-            cardStyleInterpolator: CardStyleInterpolators.forRevealFromBottomAndroid,
-            title: 'Article',
+            headerStyle: { backgroundColor: "#5cb85c" },
+            headerTintColor: "white",
+            cardStyleInterpolator:
+              CardStyleInterpolators.forRevealFromBottomAndroid,
+            title: "Article",
           }}
         />
       </RootStack.Navigator>

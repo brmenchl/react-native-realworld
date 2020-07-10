@@ -1,11 +1,16 @@
-import React, { useCallback, useRef } from 'react';
-import { useNavigation, ParamListBase, useFocusEffect } from '@react-navigation/native';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { Formik, FormikHelpers, FormikProps, FieldMetaProps } from 'formik';
-import { Form, Item, Input, Button, Text, Label, Content } from 'native-base';
-import { useDispatch } from 'react-redux';
-import { Routes } from '../navigation';
-import { signUp } from './redux';
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import {
+  useNavigation,
+  ParamListBase,
+  useFocusEffect,
+} from "@react-navigation/native";
+import { Formik, FormikHelpers, FormikProps, FieldMetaProps } from "formik";
+import { Form, Item, Input, Button, Text, Label, Content } from "native-base";
+import React, { useCallback, useRef } from "react";
+import { useDispatch } from "react-redux";
+
+import { Routes } from "../navigation";
+import { signUp } from "./redux";
 
 type RegisterFormValues = {
   username: string;
@@ -18,13 +23,13 @@ type ResetForm = () => void;
 const validate = (values: RegisterFormValues) => {
   const errors: Partial<RegisterFormValues> = {};
   if (!values.username) {
-    errors.username = 'Required';
+    errors.username = "Required";
   }
   if (!values.email) {
-    errors.email = 'Required';
+    errors.email = "Required";
   }
   if (!values.password) {
-    errors.password = 'Required';
+    errors.password = "Required";
   }
   return errors;
 };
@@ -34,7 +39,10 @@ export const RegisterScreen: React.FC = () => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
   const resetFormRef = useRef<ResetForm>(() => null);
 
-  const onSubmit = (values: RegisterFormValues, helpers: FormikHelpers<RegisterFormValues>) => {
+  const onSubmit = (
+    values: RegisterFormValues,
+    helpers: FormikHelpers<RegisterFormValues>
+  ) => {
     dispatch(signUp(values));
     helpers.setSubmitting(false);
   };
@@ -50,12 +58,16 @@ export const RegisterScreen: React.FC = () => {
   return (
     <Content padder>
       <Formik
-        initialValues={{ username: '', email: '', password: '' }}
+        initialValues={{ username: "", email: "", password: "" }}
         validateOnMount
         onSubmit={onSubmit}
         validate={validate}
         component={(props) => (
-          <RegisterForm {...props} onLinkPress={handleLinkPress} resetFormRef={resetFormRef} />
+          <RegisterForm
+            {...props}
+            onLinkPress={handleLinkPress}
+            resetFormRef={resetFormRef}
+          />
         )}
       />
     </Content>
@@ -86,7 +98,11 @@ const Field: React.FC<{
   </Item>
 );
 
-const RegisterForm: React.FC<RegisterFormProps> = ({ resetFormRef, onLinkPress, ...formik }) => {
+const RegisterForm: React.FC<RegisterFormProps> = ({
+  resetFormRef,
+  onLinkPress,
+  ...formik
+}) => {
   resetFormRef.current = formik.resetForm;
 
   return (
@@ -94,21 +110,21 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ resetFormRef, onLinkPress, 
       <Form>
         <Field
           label="Username"
-          meta={formik.getFieldMeta('username')}
-          onBlur={formik.handleBlur('username')}
-          onChange={formik.handleChange('username')}
+          meta={formik.getFieldMeta("username")}
+          onBlur={formik.handleBlur("username")}
+          onChange={formik.handleChange("username")}
         />
         <Field
           label="Email"
-          meta={formik.getFieldMeta('email')}
-          onBlur={formik.handleBlur('email')}
-          onChange={formik.handleChange('email')}
+          meta={formik.getFieldMeta("email")}
+          onBlur={formik.handleBlur("email")}
+          onChange={formik.handleChange("email")}
         />
         <Field
           label="Password"
-          meta={formik.getFieldMeta('password')}
-          onBlur={formik.handleBlur('password')}
-          onChange={formik.handleChange('password')}
+          meta={formik.getFieldMeta("password")}
+          onBlur={formik.handleBlur("password")}
+          onChange={formik.handleChange("password")}
           secureTextEntry
         />
       </Form>
@@ -120,7 +136,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ resetFormRef, onLinkPress, 
       >
         <Text>Sign Up</Text>
       </Button>
-      <Button block info style={{ marginTop: 10, marginHorizontal: 15 }} onPress={onLinkPress}>
+      <Button
+        block
+        info
+        style={{ marginTop: 10, marginHorizontal: 15 }}
+        onPress={onLinkPress}
+      >
         <Text>Sign In</Text>
       </Button>
     </>

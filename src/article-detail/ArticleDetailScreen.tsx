@@ -1,12 +1,13 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useFocusEffect, RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { Content } from 'native-base';
-import { loadArticleDetailScreen } from './redux';
-import { ArticleDetail } from './ArticleDetail';
+import { useFocusEffect, RouteProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { Content } from "native-base";
+import React from "react";
+import { useDispatch } from "react-redux";
 
-export const ArticleDetailScreenName = 'ArticleDetail';
+import { ArticleDetail } from "./ArticleDetail";
+import { loadArticleDetailScreen } from "./redux";
+
+export const ArticleDetailScreenName = "ArticleDetail";
 
 export type ArticleDetailScreenParamList = {
   [ArticleDetailScreenName]: {
@@ -15,8 +16,14 @@ export type ArticleDetailScreenParamList = {
 };
 
 type Props = {
-  navigation: StackNavigationProp<ArticleDetailScreenParamList, typeof ArticleDetailScreenName>;
-  route: RouteProp<ArticleDetailScreenParamList, typeof ArticleDetailScreenName>;
+  navigation: StackNavigationProp<
+    ArticleDetailScreenParamList,
+    typeof ArticleDetailScreenName
+  >;
+  route: RouteProp<
+    ArticleDetailScreenParamList,
+    typeof ArticleDetailScreenName
+  >;
 };
 
 const ArticleDetailScreen: React.FC<Props> = ({ route }) => {
@@ -25,7 +32,7 @@ const ArticleDetailScreen: React.FC<Props> = ({ route }) => {
   useFocusEffect(
     React.useCallback(() => {
       dispatch(loadArticleDetailScreen(route.params.slug));
-    }, [dispatch, route.params.slug]),
+    }, [dispatch, route.params.slug])
   );
 
   return (

@@ -1,8 +1,8 @@
 export enum Routes {
-  Home = 'Home',
-  ArticleDetail = 'ArticleDetail',
-  Profile = 'Profiles',
-  Login = 'Login',
-  Register = 'Register',
-  Settings = 'Settings',
+  Home = "Home",
+  ArticleDetail = "ArticleDetail",
+  Profile = "Profiles",
+  Login = "Login",
+  Register = "Register",
+  Settings = "Settings",
 }
