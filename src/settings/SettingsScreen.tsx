@@ -14,11 +14,11 @@ import React, { useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  auth,
   getUserWithProfile,
   useAuthOnly,
   updateSettings,
   guest,
+  signOut,
 } from "../auth";
 
 type SettingsFormValues = {
@@ -47,7 +47,7 @@ export const SettingsScreen: React.FC = () => {
   };
 
   const handleLogoutPress = useCallback(() => {
-    dispatch(auth.actions.logOut);
+    dispatch(signOut);
   }, [dispatch]);
 
   useFocusEffect(() => {

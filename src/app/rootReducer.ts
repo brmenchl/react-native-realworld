@@ -1,13 +1,13 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
-import { articles } from "../articles";
-import { auth } from "../auth";
-import { profiles } from "../profiles";
+import articlesReducer from "../articles/slice";
+import authReducer from "../auth/slice";
+import profilesReducer from "../profiles/slice";
 
 const rootReducer = combineReducers({
-  auth: auth.reducer,
-  articles: articles.reducer,
-  profiles: profiles.reducer,
+  auth: authReducer,
+  articles: articlesReducer,
+  profiles: profilesReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import { getProfilesState } from "../profiles";
-import { SelectorState } from "./redux";
+import { SelectorState } from "./slice";
 import { SignedInUserWithProfile, guest } from "./types";
 
 const getAuthState = (state: SelectorState) => state.auth;

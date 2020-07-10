@@ -3,9 +3,9 @@ import React, { useMemo, useCallback } from "react";
 import { TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 
+import { RootState } from "../app/rootReducer";
 import { makeGetArticleBySlug, Article } from "../articles";
 import { AuthorCitation } from "../profiles";
-import { RootState } from "../store";
 
 type Props = {
   slug: string;

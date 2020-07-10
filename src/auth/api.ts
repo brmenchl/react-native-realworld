@@ -1,5 +1,5 @@
 import api from "../api";
-import { createProfile, ProfileDataWithoutFollowing } from "../profiles";
+import { createProfile, ProfileDataWithoutFollowing } from "../profiles/types";
 import {
   Session,
   SignedInUserWithProfile,

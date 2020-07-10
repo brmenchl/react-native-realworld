@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import articles from "../articles/redux";
-import auth from "../auth/redux";
+import { updatedArticles } from "../articles/slice";
+import { loadedUser } from "../auth/slice";
 import { Profile } from "./types";
 
 const sliceName = "profiles";
@@ -25,19 +25,14 @@ const profiles = createSlice({
   initialState: {} as SliceState,
   reducers: {},
   extraReducers: {
-    [articles.actions.updateArticles.type]: (
-      state,
-      action: PayloadAction<DataWithProfile[]>
-    ) =>
+    [updatedArticles.type]: (state, action: PayloadAction<DataWithProfile[]>) =>
       action.payload.reduce(
         (acc, dataWithProfile) => insertProfile(acc, dataWithProfile.profile),
         state
       ),
-    [auth.actions.loadedUser.type]: (
-      state,
-      action: PayloadAction<DataWithProfile>
-    ) => insertProfile(state, action.payload.profile),
+    [loadedUser.type]: (state, action: PayloadAction<DataWithProfile>) =>
+      insertProfile(state, action.payload.profile),
   },
 });
 
-export default profiles;
+export default profiles.reducer;

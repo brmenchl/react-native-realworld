@@ -1,21 +1,16 @@
-import { configureStore } from "@reduxjs/toolkit";
-import createSagaMiddleware from "redux-saga";
+import { configureStore, Action } from "@reduxjs/toolkit";
+import { ThunkAction } from "redux-thunk";
 
-import rootReducer from "./rootReducer";
-import rootSaga from "./saga";
-
-const sagaMiddleware = createSagaMiddleware();
+import rootReducer, { RootState } from "./rootReducer";
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: [sagaMiddleware],
   devTools: {
     name: "realworld",
   },
 });
 
-sagaMiddleware.run(rootSaga);
-
 export type AppDispatch = typeof store.dispatch;
+export type AppThunk = ThunkAction<void, RootState, unknown, Action<string>>;
 
 export default store;

@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { SelectorState } from "./redux";
+import { SelectorState } from "./slice";
 
 const getArticleState = (state: SelectorState) => state.articles;
 const getArticleSlug = (_: SelectorState, slug: string) => slug;

@@ -2,7 +2,7 @@ import { Thumbnail, Text, Card } from "native-base";
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 
-import { RootState } from "../store";
+import { RootState } from "../app/rootReducer";
 import { formatDate } from "../utils";
 import { makeGetProfileByUsername } from "./selectors";
 import { Profile, DEFAULT_AVATAR_URL } from "./types";

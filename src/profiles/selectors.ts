@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { SelectorState } from "./redux";
+import { SelectorState } from "./slice";
 
 export const getProfilesState = (state: SelectorState) => state.profiles;
 const getProfileUsername = (_: SelectorState, username: string) => username;

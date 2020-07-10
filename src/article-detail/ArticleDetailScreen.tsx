@@ -4,8 +4,8 @@ import { Content } from "native-base";
 import React from "react";
 import { useDispatch } from "react-redux";
 
+import { loadArticle } from "../articles";
 import { ArticleDetail } from "./ArticleDetail";
-import { loadArticleDetailScreen } from "./redux";
 
 export const ArticleDetailScreenName = "ArticleDetail";
 
@@ -31,7 +31,7 @@ const ArticleDetailScreen: React.FC<Props> = ({ route }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      dispatch(loadArticleDetailScreen(route.params.slug));
+      dispatch(loadArticle(route.params.slug));
     }, [dispatch, route.params.slug])
   );
 

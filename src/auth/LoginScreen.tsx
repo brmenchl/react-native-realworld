@@ -10,7 +10,7 @@ import React, { useCallback, useRef } from "react";
 import { useDispatch } from "react-redux";
 
 import { Routes } from "../navigation";
-import { signIn } from "./redux";
+import { signIn } from "./slice";
 
 type LoginFormValues = {
   email: string;
@@ -39,7 +39,7 @@ export const LoginScreen: React.FC = () => {
     values: LoginFormValues,
     helpers: FormikHelpers<LoginFormValues>
   ) => {
-    dispatch(signIn(values));
+    dispatch(signIn(values.email, values.password));
     helpers.setSubmitting(false);
   };
 

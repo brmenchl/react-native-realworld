@@ -1,5 +1,5 @@
 import api from "../api";
-import { createProfile, Profile } from "../profiles";
+import { createProfile, Profile } from "../profiles/types";
 import { Article } from "./types";
 
 type MultipleArticlesResponse = {

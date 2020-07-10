@@ -1,5 +1,4 @@
-export { default as profiles } from "./redux";
-export * from "./redux";
+export * from "./slice";
 export * from "./types";
 export * from "./AuthorCitation";
 export * from "./selectors";

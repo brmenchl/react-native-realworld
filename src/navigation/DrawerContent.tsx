@@ -24,7 +24,7 @@ import React, { useCallback } from "react";
 import { useSafeArea } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 
-import { auth } from "../auth";
+import { logOut } from "../auth";
 import { BigAvatar, Profile } from "../profiles";
 
 export const DrawerContent: React.FC<
@@ -35,7 +35,7 @@ export const DrawerContent: React.FC<
 > = ({ isLoggedIn, profile, ...props }) => {
   const dispatch = useDispatch();
   const handleLogOutPress = useCallback(() => {
-    dispatch(auth.actions.logOut());
+    dispatch(logOut());
   }, [dispatch]);
 
   return (

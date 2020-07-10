@@ -3,9 +3,9 @@ import { H1, H3, Text } from "native-base";
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 
+import { RootState } from "../app/rootReducer";
 import { makeGetArticleBySlug, Article } from "../articles";
 import { AuthorCitation } from "../profiles";
-import { RootState } from "../store";
 
 type Props = {
   slug: string;
