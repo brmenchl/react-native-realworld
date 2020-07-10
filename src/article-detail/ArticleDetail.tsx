@@ -1,10 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { H1, H3, Text } from "native-base";
-import React, { useMemo } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 
 import { RootState } from "../app/rootReducer";
-import { makeGetArticleBySlug, Article } from "../articles";
+import { Article, getArticleBySlug } from "../articles";
 import { AuthorCitation } from "../profiles";
 
 type Props = {
@@ -13,7 +13,6 @@ type Props = {
 
 export const ArticleDetail: React.FC<Props> = ({ slug }) => {
   const navigation = useNavigation();
-  const getArticleBySlug = useMemo(makeGetArticleBySlug, []);
   const article: Article | undefined = useSelector((state: RootState) =>
     getArticleBySlug(state, slug)
   );

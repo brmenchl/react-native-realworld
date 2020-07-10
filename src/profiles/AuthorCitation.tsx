@@ -1,10 +1,10 @@
 import { Thumbnail, Text, Card } from "native-base";
-import React, { useMemo } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 
 import { RootState } from "../app/rootReducer";
 import { formatDate } from "../utils";
-import { makeGetProfileByUsername } from "./selectors";
+import { getProfileByUsername } from "./slice";
 import { Profile, DEFAULT_AVATAR_URL } from "./types";
 
 type Props = {
@@ -14,9 +14,8 @@ type Props = {
 };
 
 export const AuthorCitation: React.FC<Props> = ({ username, citationDate }) => {
-  const getAuthorByUsername = useMemo(makeGetProfileByUsername, []);
   const author: Profile | undefined = useSelector((state: RootState) =>
-    getAuthorByUsername(state, username)
+    getProfileByUsername(state, username)
   );
 
   if (!author) return null;

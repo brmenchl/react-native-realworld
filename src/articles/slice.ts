@@ -1,57 +1,70 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { reduce } from "ramda";
+import {
+  createEntityAdapter,
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 
-import { AppThunk } from "../app/store";
 import { fetchArticles, fetchArticleBySlug } from "./api";
-import { getArticleBySlug } from "./selectors";
 import { Article, ArticleWithProfile } from "./types";
 
 const sliceName = "articles";
 
-type SliceState = { [slug: string]: Article | undefined };
-
-export type SelectorState = { [sliceName]: SliceState };
-
-const insertArticle = (
-  articleState: SliceState,
-  newArticle: Article
-): SliceState => ({
-  ...articleState,
-  [newArticle.slug]: newArticle,
+const articleAdaper = createEntityAdapter<Article>({
+  selectId: (article) => article.slug,
+  sortComparer: (a, b) =>
+    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
 });
 
-const articles = createSlice({
-  name: sliceName,
-  initialState: {} as SliceState,
-  reducers: {
-    updatedArticles: (state, action: PayloadAction<ArticleWithProfile[]>) =>
-      reduce(
-        (acc, articleWithProfile) =>
-          insertArticle(acc, articleWithProfile.article),
-        state,
-        action.payload
-      ),
-    updatedArticle: (state, action: PayloadAction<ArticleWithProfile>) =>
-      insertArticle(state, action.payload.article),
+const globalizedSelectors = articleAdaper.getSelectors(
+  (state) => state[sliceName]
+);
+export const getArticleBySlug = globalizedSelectors.selectById as (
+  state: unknown,
+  slug: string
+) => Article | undefined;
+
+export const getAllArticleSlugs = globalizedSelectors.selectIds as (
+  state: unknown
+) => string[];
+
+export const loadArticles = createAsyncThunk(
+  "articles/loadAll",
+  async () => await fetchArticles()
+);
+
+export const loadArticle = createAsyncThunk(
+  "articles/load",
+  async (slug: string, { getState }) => {
+    return await fetchArticleBySlug(slug);
   },
+  {
+    condition: (slug, { getState }) =>
+      getArticleBySlug(getState(), slug) === undefined,
+  }
+);
+
+const articlesSlice = createSlice({
+  name: sliceName,
+  initialState: articleAdaper.getInitialState(),
+  reducers: {},
+  extraReducers: (builder) =>
+    builder
+      .addCase(
+        loadArticles.fulfilled,
+        (state, action: PayloadAction<ArticleWithProfile[]>) =>
+          articleAdaper.upsertMany(
+            state,
+            action.payload.map(
+              (articleWithProfile) => articleWithProfile.article
+            )
+          )
+      )
+      .addCase(
+        loadArticle.fulfilled,
+        (state, action: PayloadAction<ArticleWithProfile>) =>
+          articleAdaper.upsertOne(state, action.payload.article)
+      ),
 });
 
-export const { updatedArticle, updatedArticles } = articles.actions;
-
-export default articles.reducer;
-
-export const loadArticles = (): AppThunk => async (dispatch) => {
-  const newArticles = await fetchArticles();
-  dispatch(updatedArticles(newArticles));
-};
-
-export const loadArticle = (slug: string): AppThunk => async (
-  dispatch,
-  getState
-) => {
-  const article = getArticleBySlug(getState(), slug);
-  if (article !== undefined) {
-    const articleWithProfile = await fetchArticleBySlug(slug);
-    dispatch(updatedArticle(articleWithProfile));
-  }
-};
+export default articlesSlice.reducer;

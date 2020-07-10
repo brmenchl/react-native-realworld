@@ -1,24 +1,19 @@
-import { createSelector } from "@reduxjs/toolkit";
-
-import { getProfilesState } from "../profiles";
+import { RootState } from "../app/rootReducer";
+import { getProfileByUsername } from "../profiles";
 import { SelectorState } from "./slice";
-import { SignedInUserWithProfile, guest } from "./types";
+import { guest } from "./types";
 
 const getAuthState = (state: SelectorState) => state.auth;
 
-export const getIsLoggedIn = createSelector(
-  getAuthState,
-  (user) => user !== guest
-);
+export const getIsLoggedIn = (state: RootState) =>
+  getAuthState(state) !== guest;
 
-export const getUserWithProfile = createSelector(
-  getAuthState,
-  getProfilesState,
-  (user, profiles) =>
-    user !== guest
-      ? ({
-          user,
-          profile: profiles[user.username],
-        } as SignedInUserWithProfile)
-      : guest
-);
+export const getUserWithProfile = (state: RootState) => {
+  const user = getAuthState(state);
+  return user !== guest
+    ? {
+        user,
+        profile: getProfileByUsername(state, user.username),
+      }
+    : guest;
+};

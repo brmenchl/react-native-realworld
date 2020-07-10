@@ -1,6 +1,10 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  PayloadAction,
+  createEntityAdapter,
+} from "@reduxjs/toolkit";
 
-import { updatedArticles } from "../articles/slice";
+import { loadArticle, loadArticles } from "../articles/slice";
 import { loadedUser } from "../auth/slice";
 import { Profile } from "./types";
 
@@ -12,27 +16,36 @@ type SliceState = { [slug: string]: Profile | undefined };
 
 export type SelectorState = { [sliceName]: SliceState };
 
-const insertProfile = (
-  profileState: SliceState,
-  profile: Profile
-): SliceState => ({
-  ...profileState,
-  [profile.username]: profile,
+const profileAdapter = createEntityAdapter<Profile>({
+  selectId: (profile) => profile.username,
 });
 
 const profiles = createSlice({
   name: sliceName,
-  initialState: {} as SliceState,
+  initialState: profileAdapter.getInitialState(),
   reducers: {},
-  extraReducers: {
-    [updatedArticles.type]: (state, action: PayloadAction<DataWithProfile[]>) =>
-      action.payload.reduce(
-        (acc, dataWithProfile) => insertProfile(acc, dataWithProfile.profile),
-        state
+  extraReducers: (builder) =>
+    builder
+      .addCase(
+        loadArticles.fulfilled,
+        (state, action: PayloadAction<DataWithProfile[]>) =>
+          profileAdapter.upsertMany(
+            state,
+            action.payload.map((dataWithProfile) => dataWithProfile.profile)
+          )
+      )
+      .addCase(
+        loadArticle.fulfilled,
+        (state, action: PayloadAction<DataWithProfile>) =>
+          profileAdapter.upsertOne(state, action.payload.profile)
+      )
+      .addCase(loadedUser, (state, action: PayloadAction<DataWithProfile>) =>
+        profileAdapter.upsertOne(state, action.payload.profile)
       ),
-    [loadedUser.type]: (state, action: PayloadAction<DataWithProfile>) =>
-      insertProfile(state, action.payload.profile),
-  },
 });
 
 export default profiles.reducer;
+
+export const { selectById: getProfileByUsername } = profileAdapter.getSelectors(
+  (state) => state[sliceName]
+);

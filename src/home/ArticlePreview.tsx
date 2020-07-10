@@ -1,10 +1,10 @@
 import { Card, CardItem, Text, Body, H1 } from "native-base";
-import React, { useMemo, useCallback } from "react";
+import React, { useCallback } from "react";
 import { TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 
 import { RootState } from "../app/rootReducer";
-import { makeGetArticleBySlug, Article } from "../articles";
+import { Article, getArticleBySlug } from "../articles";
 import { AuthorCitation } from "../profiles";
 
 type Props = {
@@ -16,7 +16,6 @@ export const ArticlePreview: React.FC<Props> = ({
   slug,
   navigateToArticleDetailScreen,
 }) => {
-  const getArticleBySlug = useMemo(makeGetArticleBySlug, []);
   const article: Article | undefined = useSelector((state: RootState) =>
     getArticleBySlug(state, slug)
   );
