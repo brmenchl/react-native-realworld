@@ -1,2 +1,3 @@
 export * from "./slice";
-export { PopularTagsCarousel } from "./PopularTagsCarousel";
+export { PopularTagsSection } from "./PopularTagsSection";
+export { TagCarousel } from "./TagCarousel";

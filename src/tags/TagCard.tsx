@@ -6,7 +6,7 @@ type Props = {
   onPress(): void;
 };
 
-const PopularTagCard: React.FC<Props> = ({ tag, onPress }) => (
+const TagCard: React.FC<Props> = ({ tag, onPress }) => (
   <Card>
     <CardItem button onPress={onPress}>
       <Body>
@@ -16,4 +16,4 @@ const PopularTagCard: React.FC<Props> = ({ tag, onPress }) => (
   </Card>
 );
 
-export default PopularTagCard;
+export default TagCard;

@@ -21,8 +21,13 @@ export const loadMoreArticlesList = createAsyncThunk<
   void,
   { state: SelectorState }
 >("articlesList/loadMore", async (_, { getState, dispatch }) => {
-  const newOffset = getState()[sliceName].slugs.length;
-  const articlesWithProfiles = await fetchArticles({ offset: newOffset });
+  const sliceState = getState()[sliceName];
+  const newOffset = sliceState.slugs.length;
+  const currentFilterTag = sliceState.filterTag;
+  const articlesWithProfiles = await fetchArticles({
+    offset: newOffset,
+    tag: currentFilterTag,
+  });
   dispatch(loadedManyArticles(articlesWithProfiles));
   dispatch(loadedManyProfiles(articlesWithProfiles));
   return articlesWithProfiles.map(({ article }) => article.slug);

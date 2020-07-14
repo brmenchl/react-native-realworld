@@ -4,10 +4,10 @@ import { FlatList, ListRenderItemInfo } from "react-native";
 import { useSelector } from "react-redux";
 
 import { Routes } from "../navigation";
-import { PopularTagsCarousel } from "../tags/PopularTagsCarousel";
+import { PopularTagsSection } from "../tags";
 import { ArticlePreview } from "./ArticlePreview";
 import { CurrentTagHeader } from "./CurrentTagHeader";
-import { getArticleListSlugs, getArticleListFilterTag } from "./slice";
+import { getArticleListSlugs } from "./slice";
 
 interface Props {
   onEndReached(): void;
@@ -39,7 +39,7 @@ export const ArticleList: React.FC<Props> = (props) => {
       <CurrentTagHeader />
       <FlatList
         data={slugs}
-        ListHeaderComponent={PopularTagsCarousel}
+        ListHeaderComponent={PopularTagsSection}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         onEndReached={props.onEndReached}

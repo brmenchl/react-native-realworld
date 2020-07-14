@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../app/rootReducer";
 import { Article, getArticleBySlug } from "../articles";
 import { AuthorCitation } from "../profiles";
+import { TagCarousel } from "../tags";
 
 type Props = {
   slug: string;
@@ -44,6 +45,7 @@ export const ArticlePreview: React.FC<Props> = ({
             <Text>{article.tagList.join(" ")}</Text>
           </Body>
         </CardItem>
+        <TagCarousel tags={article.tagList} />
       </Card>
     </TouchableOpacity>
   ) : null;
