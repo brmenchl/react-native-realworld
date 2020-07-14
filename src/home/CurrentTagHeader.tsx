@@ -18,13 +18,15 @@ export const CurrentTagHeader: React.FC = () => {
   return (
     <View
       style={{
-        backgroundColor: currentTag ? "#5cb85c" : "transparent",
+        backgroundColor: "#5cb85c",
         padding: 5,
         alignItems: "center",
       }}
     >
       <TouchableOpacity onPress={handlePress}>
-        {currentTag ? <H1 style={{ color: "white" }}>#{currentTag}</H1> : null}
+        <H1 style={{ color: "white" }}>
+          {currentTag ? `#${currentTag}` : "Global Feed"}
+        </H1>
       </TouchableOpacity>
     </View>
   );
