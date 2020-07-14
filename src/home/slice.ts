@@ -9,6 +9,7 @@ const sliceName = "articlesList";
 interface SliceState {
   isLoading: boolean;
   slugs: string[];
+  filterTag?: string;
 }
 
 interface SelectorState {
@@ -29,7 +30,7 @@ export const loadMoreArticlesList = createAsyncThunk<
 
 export const filterArticleListByTag = createAsyncThunk<
   string[],
-  string,
+  string | undefined,
   { state: SelectorState }
 >("articlesList/filterByTag", async (tag, { dispatch }) => {
   const articlesWithProfiles = await fetchArticles({ offset: 0, tag });
@@ -38,9 +39,11 @@ export const filterArticleListByTag = createAsyncThunk<
   return articlesWithProfiles.map(({ article }) => article.slug);
 });
 
+export const clearTagFilter = () => filterArticleListByTag(undefined);
+
 const articlesListSlice = createSlice({
   name: sliceName,
-  initialState: { isLoading: false, slugs: [] },
+  initialState: { isLoading: false, slugs: [] } as SliceState,
   reducers: {},
   extraReducers: (builder) =>
     builder
@@ -49,14 +52,17 @@ const articlesListSlice = createSlice({
         isLoading: true,
       }))
       .addCase(loadMoreArticlesList.fulfilled, (state, action) => ({
+        ...state,
         isLoading: false,
         slugs: [...state.slugs, ...action.payload],
       }))
-      .addCase(filterArticleListByTag.pending, (state) => ({
+      .addCase(filterArticleListByTag.pending, (state, action) => ({
         ...state,
         isLoading: true,
+        filterTag: action.meta.arg,
       }))
       .addCase(filterArticleListByTag.fulfilled, (state, action) => ({
+        ...state,
         isLoading: false,
         slugs: action.payload,
       })),
@@ -66,3 +72,6 @@ export default articlesListSlice.reducer;
 
 export const getArticleListSlugs = (state: SelectorState) =>
   state[sliceName].slugs;
+
+export const getArticleListFilterTag = (state: SelectorState) =>
+  state[sliceName].filterTag;

@@ -3,11 +3,11 @@ import React, { useCallback } from "react";
 import { FlatList, ListRenderItemInfo } from "react-native";
 import { useSelector } from "react-redux";
 
-import { getAllArticleSlugs } from "../articles";
 import { Routes } from "../navigation";
 import { PopularTagsCarousel } from "../tags/PopularTagsCarousel";
 import { ArticlePreview } from "./ArticlePreview";
-import { getArticleListSlugs } from "./slice";
+import { CurrentTagHeader } from "./CurrentTagHeader";
+import { getArticleListSlugs, getArticleListFilterTag } from "./slice";
 
 interface Props {
   onEndReached(): void;
@@ -35,12 +35,15 @@ export const ArticleList: React.FC<Props> = (props) => {
   );
 
   return (
-    <FlatList
-      data={slugs}
-      ListHeaderComponent={PopularTagsCarousel}
-      keyExtractor={keyExtractor}
-      renderItem={renderItem}
-      onEndReached={props.onEndReached}
-    />
+    <>
+      <CurrentTagHeader />
+      <FlatList
+        data={slugs}
+        ListHeaderComponent={PopularTagsCarousel}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        onEndReached={props.onEndReached}
+      />
+    </>
   );
 };

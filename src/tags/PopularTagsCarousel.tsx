@@ -1,3 +1,4 @@
+import { H2, Card, CardItem, H3 } from "native-base";
 import * as React from "react";
 import { useCallback } from "react";
 import { FlatList, ListRenderItem } from "react-native";
@@ -25,12 +26,19 @@ export const PopularTagsCarousel: React.FC = () => {
   );
 
   return (
-    <FlatList
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      data={tags}
-      keyExtractor={keyExtractor}
-      renderItem={renderPopularTagCard}
-    />
+    <Card transparent>
+      <CardItem header>
+        <H3>Popular Tags</H3>
+      </CardItem>
+      <CardItem>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={tags}
+          keyExtractor={keyExtractor}
+          renderItem={renderPopularTagCard}
+        />
+      </CardItem>
+    </Card>
   );
 };
