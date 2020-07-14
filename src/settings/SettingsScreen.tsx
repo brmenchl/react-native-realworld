@@ -11,8 +11,9 @@ import {
   Textarea,
 } from "native-base";
 import React, { useRef, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
+import { useThunkDispatch } from "../app/store";
 import {
   getUserWithProfile,
   useAuthOnly,
@@ -32,7 +33,7 @@ type SettingsFormValues = {
 type ResetForm = () => void;
 
 export const SettingsScreen: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useThunkDispatch();
   const resetFormRef = useRef<ResetForm>(() => null);
   const userWithProfile = useSelector(getUserWithProfile);
 

@@ -7,8 +7,8 @@ import {
 import { Formik, FormikHelpers, FormikProps, FieldMetaProps } from "formik";
 import { Form, Item, Input, Button, Text, Label, Content } from "native-base";
 import React, { useCallback, useRef } from "react";
-import { useDispatch } from "react-redux";
 
+import { useThunkDispatch } from "../app/store";
 import { Routes } from "../navigation";
 import { signUp } from "./slice";
 
@@ -35,7 +35,7 @@ const validate = (values: RegisterFormValues) => {
 };
 
 export const RegisterScreen: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useThunkDispatch();
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
   const resetFormRef = useRef<ResetForm>(() => null);
 

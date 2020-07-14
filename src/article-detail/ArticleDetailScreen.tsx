@@ -2,8 +2,8 @@ import { useFocusEffect, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Content } from "native-base";
 import React from "react";
-import { useDispatch } from "react-redux";
 
+import { useThunkDispatch } from "../app/store";
 import { loadArticle } from "../articles";
 import { ArticleDetail } from "./ArticleDetail";
 
@@ -27,7 +27,7 @@ type Props = {
 };
 
 const ArticleDetailScreen: React.FC<Props> = ({ route }) => {
-  const dispatch = useDispatch();
+  const dispatch = useThunkDispatch();
 
   useFocusEffect(
     React.useCallback(() => {
