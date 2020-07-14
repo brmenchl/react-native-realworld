@@ -3,6 +3,7 @@ import { AsyncStorage } from "react-native";
 
 import { setAuthToken } from "../api";
 import { AppThunk } from "../app/store";
+import { loadedProfile } from "../profiles";
 import { login, register, updateUser, fetchUser } from "./api";
 import { User, guest, SignedInUserWithProfile, UserSettings } from "./types";
 
@@ -41,6 +42,7 @@ export const signIn = (email: string, password: string): AppThunk => async (
     const { token, ...userWithProfile } = await login(email, password);
     persistSession(token);
     dispatch(loadedUser(userWithProfile));
+    dispatch(loadedProfile(userWithProfile));
   } catch (e) {
     console.error(e);
   }

@@ -4,8 +4,6 @@ import {
   createEntityAdapter,
 } from "@reduxjs/toolkit";
 
-import { loadArticle, loadArticles } from "../articles/slice";
-import { loadedUser } from "../auth/slice";
 import { Profile } from "./types";
 
 const sliceName = "profiles";
@@ -20,32 +18,24 @@ const profileAdapter = createEntityAdapter<Profile>({
   selectId: (profile) => profile.username,
 });
 
-const profiles = createSlice({
+const slice = createSlice({
   name: sliceName,
   initialState: profileAdapter.getInitialState(),
-  reducers: {},
-  extraReducers: (builder) =>
-    builder
-      .addCase(
-        loadArticles.fulfilled,
-        (state, action: PayloadAction<DataWithProfile[]>) =>
-          profileAdapter.upsertMany(
-            state,
-            action.payload.map((dataWithProfile) => dataWithProfile.profile)
-          )
-      )
-      .addCase(
-        loadArticle.fulfilled,
-        (state, action: PayloadAction<DataWithProfile>) =>
-          profileAdapter.upsertOne(state, action.payload.profile)
-      )
-      .addCase(loadedUser, (state, action: PayloadAction<DataWithProfile>) =>
-        profileAdapter.upsertOne(state, action.payload.profile)
+  reducers: {
+    loadedProfile: (state, action: PayloadAction<DataWithProfile>) =>
+      profileAdapter.upsertOne(state, action.payload.profile),
+    loadedManyProfiles: (state, action: PayloadAction<DataWithProfile[]>) =>
+      profileAdapter.upsertMany(
+        state,
+        action.payload.map((dataWithProfile) => dataWithProfile.profile)
       ),
+  },
 });
 
-export default profiles.reducer;
+export default slice.reducer;
 
 export const { selectById: getProfileByUsername } = profileAdapter.getSelectors(
   (state) => state[sliceName]
 );
+
+export const { loadedProfile, loadedManyProfiles } = slice.actions;

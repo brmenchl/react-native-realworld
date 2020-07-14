@@ -3,9 +3,11 @@ import {
   createAsyncThunk,
   createSlice,
   PayloadAction,
+  EntityState,
 } from "@reduxjs/toolkit";
 
-import { fetchArticles, fetchArticleBySlug } from "./api";
+import { loadedProfile } from "../profiles";
+import { fetchArticleBySlug } from "./api";
 import { Article, ArticleWithProfile } from "./types";
 
 const sliceName = "articles";
@@ -16,55 +18,59 @@ const articleAdaper = createEntityAdapter<Article>({
     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
 });
 
+interface SliceState extends EntityState<Article> {}
+
+interface SelectorState {
+  [sliceName]: SliceState;
+}
+
 const globalizedSelectors = articleAdaper.getSelectors(
-  (state) => state[sliceName]
+  (state: SelectorState) => state[sliceName]
 );
 export const getArticleBySlug = globalizedSelectors.selectById as (
-  state: unknown,
+  state: SelectorState,
   slug: string
 ) => Article | undefined;
 
 export const getAllArticleSlugs = globalizedSelectors.selectIds as (
-  state: unknown
+  state: SelectorState
 ) => string[];
 
-export const loadArticles = createAsyncThunk(
-  "articles/loadAll",
-  async () => await fetchArticles()
-);
-
-export const loadArticle = createAsyncThunk(
+export const loadArticle = createAsyncThunk<
+  Article,
+  string,
+  { state: SelectorState }
+>(
   "articles/load",
-  async (slug: string, { getState }) => {
-    return await fetchArticleBySlug(slug);
+  async (slug, { dispatch }) => {
+    const articleWithProfile = await fetchArticleBySlug(slug);
+    dispatch(loadedProfile(articleWithProfile));
+    return articleWithProfile.article;
   },
   {
-    condition: (slug, { getState }) =>
-      getArticleBySlug(getState(), slug) === undefined,
+    condition: (slug, thunkAPI) =>
+      getArticleBySlug(thunkAPI.getState(), slug) === undefined,
   }
 );
 
 const articlesSlice = createSlice({
   name: sliceName,
   initialState: articleAdaper.getInitialState(),
-  reducers: {},
-  extraReducers: (builder) =>
-    builder
-      .addCase(
-        loadArticles.fulfilled,
-        (state, action: PayloadAction<ArticleWithProfile[]>) =>
-          articleAdaper.upsertMany(
-            state,
-            action.payload.map(
-              (articleWithProfile) => articleWithProfile.article
-            )
-          )
-      )
-      .addCase(
-        loadArticle.fulfilled,
-        (state, action: PayloadAction<ArticleWithProfile>) =>
-          articleAdaper.upsertOne(state, action.payload.article)
+  reducers: {
+    loadedManyArticles: (state, action: PayloadAction<ArticleWithProfile[]>) =>
+      articleAdaper.upsertMany(
+        state,
+        action.payload.map((articleWithProfile) => articleWithProfile.article)
       ),
+  },
+  extraReducers: (builder) =>
+    builder.addCase(
+      loadArticle.fulfilled,
+      (state, action: PayloadAction<Article>) =>
+        articleAdaper.upsertOne(state, action.payload)
+    ),
 });
 
 export default articlesSlice.reducer;
+
+export const { loadedManyArticles } = articlesSlice.actions;
