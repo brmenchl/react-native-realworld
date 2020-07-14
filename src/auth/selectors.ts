@@ -24,3 +24,8 @@ export const getUserProfile = (state: RootState) => {
     ? getProfileByUsername(state, user.username)
     : undefined;
 };
+
+export const getUserUsername = (state: RootState) => {
+  const user = getAuthState(state);
+  return user !== guest ? user.username : undefined;
+};

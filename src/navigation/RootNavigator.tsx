@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { ArticleDetailScreen } from "../article-detail";
 import { getIsLoggedIn, LoginScreen, RegisterScreen } from "../auth";
 import { HomeScreen } from "../home";
+import { ProfileScreen } from "../profile";
 import { SettingsScreen } from "../settings";
 import { DrawerContent, DrawerScreenContainer } from "./DrawerContent";
 import { Routes } from "./Routes";
@@ -34,10 +35,16 @@ export const DrawerNavigator: React.FC = () => {
       drawerContent={(props) => <DrawerContent {...props} />}
     >
       {isLoggedIn ? (
-        <Drawer.Screen
-          name={Routes.Settings}
-          component={withScreenContainer(SettingsScreen)}
-        />
+        <>
+          <Drawer.Screen
+            name={Routes.Profile}
+            component={withScreenContainer(ProfileScreen)}
+          />
+          <Drawer.Screen
+            name={Routes.Settings}
+            component={withScreenContainer(SettingsScreen)}
+          />
+        </>
       ) : (
         <>
           <Drawer.Screen
