@@ -21,26 +21,30 @@ import {
   Button,
 } from "native-base";
 import React, { useCallback } from "react";
+import { View } from "react-native";
 import { useSafeArea } from "react-native-safe-area-context";
+import { useSelector } from "react-redux";
 
 import { useThunkDispatch } from "../app/store";
-import { logOut } from "../auth";
-import { BigAvatar, Profile } from "../profiles";
+import { logOut, getIsLoggedIn, getUserProfile } from "../auth";
+import { BigAvatar } from "../profiles";
 
-export const DrawerContent: React.FC<
-  DrawerContentComponentProps<DrawerContentOptions> & {
-    isLoggedIn: boolean;
-    profile?: Profile;
-  }
-> = ({ isLoggedIn, profile, ...props }) => {
+export const DrawerContent: React.FC<DrawerContentComponentProps<
+  DrawerContentOptions
+>> = (props) => {
   const dispatch = useThunkDispatch();
   const handleLogOutPress = useCallback(() => {
     dispatch(logOut());
   }, [dispatch]);
 
+  const isLoggedIn = useSelector(getIsLoggedIn);
+  const profile = useSelector(getUserProfile);
+
   return (
     <DrawerContentScrollView {...props}>
-      {isLoggedIn && <BigAvatar profile={profile!} />}
+      <View style={{ alignSelf: "center" }}>
+        {isLoggedIn && <BigAvatar profile={profile!} />}
+      </View>
       <DrawerItemList {...props} />
       {isLoggedIn && (
         <DrawerItem label="Sign Out" onPress={handleLogOutPress} />

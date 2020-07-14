@@ -5,7 +5,9 @@ import { DEFAULT_AVATAR_URL, Profile } from "./types";
 
 export const BigAvatar: React.FC<{ profile: Profile }> = ({ profile }) => (
   <>
-    <Thumbnail source={{ uri: profile.image ?? DEFAULT_AVATAR_URL }} />
+    <Thumbnail
+      source={{ uri: profile.image ? profile.image : DEFAULT_AVATAR_URL }}
+    />
     <H2>{profile.username}</H2>
   </>
 );

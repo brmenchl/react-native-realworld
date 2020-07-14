@@ -9,13 +9,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 
 import { ArticleDetailScreen } from "../article-detail";
-import {
-  getIsLoggedIn,
-  LoginScreen,
-  RegisterScreen,
-  getUserWithProfile,
-  guest,
-} from "../auth";
+import { getIsLoggedIn, LoginScreen, RegisterScreen } from "../auth";
 import { HomeScreen } from "../home";
 import { SettingsScreen } from "../settings";
 import { DrawerContent, DrawerScreenContainer } from "./DrawerContent";
@@ -27,7 +21,6 @@ const Drawer = createDrawerNavigator();
 
 export const DrawerNavigator: React.FC = () => {
   const isLoggedIn = useSelector(getIsLoggedIn);
-  const user = useSelector(getUserWithProfile);
 
   const withScreenContainer = (Screen: React.ComponentType) => (props: any) => (
     <DrawerScreenContainer>
@@ -38,13 +31,7 @@ export const DrawerNavigator: React.FC = () => {
   return (
     <Drawer.Navigator
       initialRouteName={Routes.Home}
-      drawerContent={(props) => (
-        <DrawerContent
-          {...props}
-          isLoggedIn={isLoggedIn}
-          profile={user !== guest ? user.profile : undefined}
-        />
-      )}
+      drawerContent={(props) => <DrawerContent {...props} />}
     >
       {isLoggedIn ? (
         <Drawer.Screen

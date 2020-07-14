@@ -13,10 +13,13 @@ type SelectorState = {
   [sliceName]: SliceState;
 };
 
-export const loadTags = createAsyncThunk(
-  "tags/load",
-  async () => await fetchTags()
-);
+export const loadTags = createAsyncThunk<
+  string[],
+  void,
+  { state: SelectorState }
+>("tags/load", async () => await fetchTags(), {
+  condition: (_, { getState }) => !isTagListLoading(getState()),
+});
 
 const slice = createSlice({
   name: sliceName,
@@ -37,3 +40,6 @@ const slice = createSlice({
 export default slice.reducer;
 
 export const getAllTags = (state: SelectorState) => state[sliceName].tags;
+
+export const isTagListLoading = (state: SelectorState) =>
+  state[sliceName].isLoading;

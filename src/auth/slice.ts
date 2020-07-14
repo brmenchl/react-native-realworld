@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AsyncStorage } from "react-native";
+import { batch } from "react-redux";
 
 import { setAuthToken } from "../api";
 import { AppThunk } from "../app/store";
@@ -41,8 +42,10 @@ export const signIn = (email: string, password: string): AppThunk => async (
   try {
     const { token, ...userWithProfile } = await login(email, password);
     persistSession(token);
-    dispatch(loadedUser(userWithProfile));
-    dispatch(loadedProfile(userWithProfile));
+    batch(() => {
+      dispatch(loadedUser(userWithProfile));
+      dispatch(loadedProfile(userWithProfile));
+    });
   } catch (e) {
     console.error(e);
   }
@@ -61,6 +64,7 @@ export const signUp = (
     );
     persistSession(token);
     dispatch(loadedUser(userWithProfile));
+    dispatch(loadedProfile(userWithProfile));
   } catch (e) {
     console.error(e);
   }
@@ -71,7 +75,10 @@ export const updateSettings = (settings: UserSettings): AppThunk => async (
 ) => {
   try {
     const userWithProfile = await updateUser(settings);
-    dispatch(loadedUser(userWithProfile));
+    batch(() => {
+      dispatch(loadedUser(userWithProfile));
+      dispatch(loadedProfile(userWithProfile));
+    });
   } catch (e) {
     console.error(e);
   }
@@ -84,7 +91,10 @@ export const loadSession = (): AppThunk => async (dispatch) => {
     if (token) {
       setAuthToken(token);
       const userWithProfile = await fetchUser();
-      dispatch(loadedUser(userWithProfile));
+      batch(() => {
+        dispatch(loadedUser(userWithProfile));
+        dispatch(loadedProfile(userWithProfile));
+      });
     } else {
       dispatch(loadedGuest());
     }

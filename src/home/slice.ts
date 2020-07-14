@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { batch } from "react-redux";
 
 import { loadedManyArticles } from "../articles";
 import { fetchArticles } from "../articles/api";
@@ -20,29 +21,45 @@ export const loadMoreArticlesList = createAsyncThunk<
   string[],
   void,
   { state: SelectorState }
->("articlesList/loadMore", async (_, { getState, dispatch }) => {
-  const sliceState = getState()[sliceName];
-  const newOffset = sliceState.slugs.length;
-  const currentFilterTag = sliceState.filterTag;
-  const articlesWithProfiles = await fetchArticles({
-    offset: newOffset,
-    tag: currentFilterTag,
-  });
-  dispatch(loadedManyArticles(articlesWithProfiles));
-  dispatch(loadedManyProfiles(articlesWithProfiles));
-  return articlesWithProfiles.map(({ article }) => article.slug);
-});
+>(
+  "articlesList/loadMore",
+  async (_, { getState, dispatch }) => {
+    const sliceState = getState()[sliceName];
+    const newOffset = sliceState.slugs.length;
+    const currentFilterTag = sliceState.filterTag;
+    const articlesWithProfiles = await fetchArticles({
+      offset: newOffset,
+      tag: currentFilterTag,
+    });
+    batch(() => {
+      dispatch(loadedManyArticles(articlesWithProfiles));
+      dispatch(loadedManyProfiles(articlesWithProfiles));
+    });
+    return articlesWithProfiles.map(({ article }) => article.slug);
+  },
+  {
+    condition: (_, { getState }) => !isArticleListLoading(getState()),
+  }
+);
 
 export const filterArticleListByTag = createAsyncThunk<
   string[],
   string | undefined,
   { state: SelectorState }
->("articlesList/filterByTag", async (tag, { dispatch }) => {
-  const articlesWithProfiles = await fetchArticles({ offset: 0, tag });
-  dispatch(loadedManyArticles(articlesWithProfiles));
-  dispatch(loadedManyProfiles(articlesWithProfiles));
-  return articlesWithProfiles.map(({ article }) => article.slug);
-});
+>(
+  "articlesList/filterByTag",
+  async (tag, { dispatch }) => {
+    const articlesWithProfiles = await fetchArticles({ offset: 0, tag });
+    batch(() => {
+      dispatch(loadedManyArticles(articlesWithProfiles));
+      dispatch(loadedManyProfiles(articlesWithProfiles));
+    });
+    return articlesWithProfiles.map(({ article }) => article.slug);
+  },
+  {
+    condition: (_, { getState }) => !isArticleListLoading(getState()),
+  }
+);
 
 export const clearTagFilter = () => filterArticleListByTag(undefined);
 
@@ -80,3 +97,6 @@ export const getArticleListSlugs = (state: SelectorState) =>
 
 export const getArticleListFilterTag = (state: SelectorState) =>
   state[sliceName].filterTag;
+
+export const isArticleListLoading = (state: SelectorState) =>
+  state[sliceName].isLoading;
