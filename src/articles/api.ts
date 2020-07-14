@@ -34,9 +34,17 @@ const parseArticle = (articleWithAuthor: ArticleWithAuthor) => ({
   profile: createProfile(articleWithAuthor.author),
 });
 
-export const fetchArticles = (offset = 0) =>
+export const fetchArticles = ({
+  offset = 0,
+  tag,
+}: {
+  offset: number;
+  tag?: string;
+}) =>
   api
-    .get<MultipleArticlesResponse>(`/articles?offset=${offset}`)
+    .get<MultipleArticlesResponse>(
+      `/articles?offset=${offset}${tag ? `&tag=${tag}` : ""}`
+    )
     .then((response) => response.data.articles.map(parseArticle));
 
 export const fetchArticleBySlug = (slug: string) =>

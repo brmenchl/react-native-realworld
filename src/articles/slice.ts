@@ -32,10 +32,6 @@ export const getArticleBySlug = globalizedSelectors.selectById as (
   slug: string
 ) => Article | undefined;
 
-export const getAllArticleSlugs = globalizedSelectors.selectIds as (
-  state: SelectorState
-) => string[];
-
 export const loadArticle = createAsyncThunk<
   Article,
   string,

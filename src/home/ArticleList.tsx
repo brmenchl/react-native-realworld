@@ -5,7 +5,9 @@ import { useSelector } from "react-redux";
 
 import { getAllArticleSlugs } from "../articles";
 import { Routes } from "../navigation";
+import { PopularTagsCarousel } from "../tags/PopularTagsCarousel";
 import { ArticlePreview } from "./ArticlePreview";
+import { getArticleListSlugs } from "./slice";
 
 interface Props {
   onEndReached(): void;
@@ -14,7 +16,7 @@ interface Props {
 const keyExtractor = (slug: string) => slug;
 
 export const ArticleList: React.FC<Props> = (props) => {
-  const slugs = useSelector(getAllArticleSlugs);
+  const slugs = useSelector(getArticleListSlugs);
   const navigation = useNavigation();
 
   const navigateToArticleDetailScreen = useCallback(
@@ -35,6 +37,7 @@ export const ArticleList: React.FC<Props> = (props) => {
   return (
     <FlatList
       data={slugs}
+      ListHeaderComponent={PopularTagsCarousel}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
       onEndReached={props.onEndReached}

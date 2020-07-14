@@ -15,18 +15,24 @@ interface SelectorState {
   [sliceName]: SliceState;
 }
 
-export const loadArticlesList = createAsyncThunk(
-  "articles/load",
-  async () => await fetchArticles()
-);
-
 export const loadMoreArticlesList = createAsyncThunk<
   string[],
   void,
   { state: SelectorState }
 >("articlesList/loadMore", async (_, { getState, dispatch }) => {
   const newOffset = getState()[sliceName].slugs.length;
-  const articlesWithProfiles = await fetchArticles(newOffset);
+  const articlesWithProfiles = await fetchArticles({ offset: newOffset });
+  dispatch(loadedManyArticles(articlesWithProfiles));
+  dispatch(loadedManyProfiles(articlesWithProfiles));
+  return articlesWithProfiles.map(({ article }) => article.slug);
+});
+
+export const filterArticleListByTag = createAsyncThunk<
+  string[],
+  string,
+  { state: SelectorState }
+>("articlesList/filterByTag", async (tag, { dispatch }) => {
+  const articlesWithProfiles = await fetchArticles({ offset: 0, tag });
   dispatch(loadedManyArticles(articlesWithProfiles));
   dispatch(loadedManyProfiles(articlesWithProfiles));
   return articlesWithProfiles.map(({ article }) => article.slug);
@@ -45,7 +51,18 @@ const articlesListSlice = createSlice({
       .addCase(loadMoreArticlesList.fulfilled, (state, action) => ({
         isLoading: false,
         slugs: [...state.slugs, ...action.payload],
+      }))
+      .addCase(filterArticleListByTag.pending, (state) => ({
+        ...state,
+        isLoading: true,
+      }))
+      .addCase(filterArticleListByTag.fulfilled, (state, action) => ({
+        isLoading: false,
+        slugs: action.payload,
       })),
 });
 
 export default articlesListSlice.reducer;
+
+export const getArticleListSlugs = (state: SelectorState) =>
+  state[sliceName].slugs;

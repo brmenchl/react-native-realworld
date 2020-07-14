@@ -2,6 +2,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback } from "react";
 
 import { useThunkDispatch } from "../app/store";
+import { loadTags } from "../tags";
 import { ArticleList } from "./ArticleList";
 import { loadMoreArticlesList } from "./slice";
 
