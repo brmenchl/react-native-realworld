@@ -18,3 +18,4 @@ web-report/
 !.yarn/releases
 !.yarn/plugins
 .vscode/settings.json
+yarn-error.log
